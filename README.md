@@ -1,4 +1,4 @@
-# 🕹️ obastaceDodgeOPCode
+# 🕹️ obastace_dodge_game
 
 Welcome to **obastaceDodgeOPCode**, an open-source Unity game designed for the **OPCode** tournament at our college. This project provides a foundational obstacle-dodge game where participants can unleash their creativity by adding scenes, levels, enemies, damage mechanics, and more. It's an excellent opportunity to learn, collaborate, and contribute to a growing game project.
 
