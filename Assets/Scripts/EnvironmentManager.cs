@@ -31,3 +31,4 @@ public class EnvironmentManager : MonoBehaviour
         DynamicGI.UpdateEnvironment(); // refresh lighting
     }
 }
+//environment management
