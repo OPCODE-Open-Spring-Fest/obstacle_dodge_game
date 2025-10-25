@@ -32,7 +32,7 @@ public class BuildOptimizer : MonoBehaviour
         QualitySettings.shadowProjection = ShadowProjection.StableFit;
         
         // texture settings
-        QualitySettings.masterTextureLimit = 0;
+        QualitySettings.globalTextureMipmapLimit = 0;
         QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
         
         // particle settings
