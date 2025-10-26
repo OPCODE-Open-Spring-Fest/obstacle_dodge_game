@@ -1,26 +1,22 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Scorer : MonoBehaviour
 {
+    [SerializeField] private int defaultLimit = 15;  // fallback if level not listed
     private int hits = 0;
-    private int limit_hits;
 
     private void Start()
     {
-        // Set hit limits based on scene/level
-        int currentScene = SceneManager.GetActiveScene().buildIndex;
-        switch (currentScene)
+        // set hit limit based on level
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+        switch (buildIndex)
         {
-            case 4:
-                limit_hits = 8; // More hits allowed for level 4
-                break;
-            case 5:
-                limit_hits = 4; // Fewer hits allowed for level 5 (more challenging)
-                break;
-            default:
-                limit_hits = 15; // Default hit limit for other levels
-                break;
+            case 1: defaultLimit = 15; break; // Level 1
+            case 4: defaultLimit = 8; break; // Level 4
+            case 5: defaultLimit = 4; break; // Level 5
+            default: defaultLimit = 15; break; // other levels
         }
     }
 
@@ -30,11 +26,11 @@ public class Scorer : MonoBehaviour
 
         hits++;
         Debug.Log($"You bumped into a thing this many times: {hits}");
-        if (hits == limit_hits)
+
+        if (hits >= defaultLimit)
         {
-            Debug.Log("You have reached the maximum number of hits!");
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.buildIndex);
+            Debug.Log("Max hit limit reached! Loading Game Over scene...");
+            LastLevelRecorder.SaveAndLoad("GameOver"); // This saves current level and loads GameOver
         }
     }
 }
