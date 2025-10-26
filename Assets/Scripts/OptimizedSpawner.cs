@@ -104,7 +104,7 @@ public class OptimizedSpawner : MonoBehaviour
             Rigidbody rb = obstacle.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.velocity = Vector3.back * GameplayBalancer.Instance.GetCurrentObstacleSpeed();
+                rb.linearVelocity = Vector3.back * GameplayBalancer.Instance.GetCurrentObstacleSpeed();
             }
             
             if (useObjectPooling)
