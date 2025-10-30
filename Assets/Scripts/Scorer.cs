@@ -1,11 +1,41 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+// (no direct Cinemachine using to avoid hard dependency)
 
 public class Scorer : MonoBehaviour
 {
     [SerializeField] private int defaultLimit = 15;  // fallback if level not listed
     private int hits = 0;
+
+    [Header("FX")]  // Helps group in Inspector
+    [Tooltip("Particle system prefab to play on collision")]  
+    [SerializeField] private GameObject collisionEffectPrefab;  // Inspector-visible
+
+    // Optional Cinemachine impulse (resolved at runtime to avoid compile-time dependency)
+    private Component impulseSourceComponent; // holds CinemachineImpulseSource if available
+    private System.Reflection.MethodInfo generateImpulseMethod;
+
+    private void Awake()
+    {
+        // Try to get CinemachineImpulseSource without compile-time reference
+        // Method 1: by full type name (if assembly name is available)
+        var impulseType = System.Type.GetType("Cinemachine.CinemachineImpulseSource, Cinemachine");
+        if (impulseType == null)
+        {
+            // Method 2: fallback by component name
+            impulseSourceComponent = GetComponent("CinemachineImpulseSource");
+        }
+        else
+        {
+            impulseSourceComponent = GetComponent(impulseType);
+        }
+
+        if (impulseSourceComponent != null)
+        {
+            generateImpulseMethod = impulseSourceComponent.GetType().GetMethod("GenerateImpulse", System.Type.EmptyTypes);
+        }
+    }
 
     private void Start()
     {
@@ -21,13 +51,29 @@ public class Scorer : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-
         if (other.gameObject.CompareTag("Collectible")) return;
 
         if (other.gameObject.CompareTag("Hit")) return;
 
         var collectibles = GetComponent<PlayerCollectibles>();
         if (collectibles != null && collectibles.IsInvincible) return;
+
+        // Trigger VFX & camera shake on valid hit
+        if ((collectibles != null) || (hits < defaultLimit))
+        {
+            // VFX - Only spawn if prefab is assigned and there is a collision contact
+            if (collisionEffectPrefab != null && other.contacts.Length > 0)
+            {
+                Vector3 impactPoint = other.contacts[0].point;
+                var fx = Instantiate(collisionEffectPrefab, impactPoint, Quaternion.identity);
+                Destroy(fx, 3f);
+            }
+            // Camera shake via Cinemachine impulse (if component exists)
+            if (impulseSourceComponent != null && generateImpulseMethod != null)
+            {
+                generateImpulseMethod.Invoke(impulseSourceComponent, null);
+            }
+        }
 
         if (collectibles != null)
         {
