@@ -61,12 +61,12 @@ public class Scorer : MonoBehaviour
         // Trigger VFX & camera shake on valid hit
         if ((collectibles != null) || (hits < defaultLimit))
         {
-            // VFX - Only spawn if prefab is assigned and there is a collision contact
+            // VFX - Spawn at the impact point every collision; do not parent so it stays there
             if (collisionEffectPrefab != null && other.contacts.Length > 0)
             {
                 Vector3 impactPoint = other.contacts[0].point;
-                var fx = Instantiate(collisionEffectPrefab, impactPoint, Quaternion.identity);
-                Destroy(fx, 3f);
+                Quaternion impactRotation = Quaternion.identity;
+                Instantiate(collisionEffectPrefab, impactPoint, impactRotation);
             }
             // Camera shake via Cinemachine impulse (if component exists)
             if (impulseSourceComponent != null && generateImpulseMethod != null)

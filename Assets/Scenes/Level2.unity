@@ -2891,9 +2891,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4272abca7a63d4fb45c526ea3ad437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level1Sky: {fileID: 2100000, guid: a1534b12ee0840d4db7c32c4a459c4db, type: 2}
+  level1Sky: {fileID: 2100000, guid: 1810bee55700ffb41bfad23fd67fbd9d, type: 2}
   level4Sky: {fileID: 2100000, guid: 1810bee55700ffb41bfad23fd67fbd9d, type: 2}
-  level5Sky: {fileID: 2100000, guid: 3721c5779298dbe4a9ae4841a93ab9e6, type: 2}
+  level5Sky: {fileID: 2100000, guid: 1810bee55700ffb41bfad23fd67fbd9d, type: 2}
 --- !u!4 &742398404
 Transform:
   m_ObjectHideFlags: 0
@@ -3875,6 +3875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Scorer
   defaultLimit: 15
   collisionEffectPrefab: {fileID: 4726282497703084394, guid: babeb394aea02c741b67a8d9a1bcb9c8, type: 3}
+  attachEffectToPlayer: 1
 --- !u!114 &945966554
 MonoBehaviour:
   m_ObjectHideFlags: 0
