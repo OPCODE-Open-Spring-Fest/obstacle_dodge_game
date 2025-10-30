@@ -33,6 +33,7 @@ public class PlayerCollectibles : MonoBehaviour
     public void UseGem(float duration = 5f)
     {
         if (IsInvincible) return;
+        OnInvincibilityStarted?.Invoke(duration);
         StartCoroutine(InvincibilityRoutine(duration));
     }
 
