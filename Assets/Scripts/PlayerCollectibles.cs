@@ -18,13 +18,14 @@ public class PlayerCollectibles : MonoBehaviour
     public void AddLife(int amount = 1)
     {
         lives += amount;
+        // Clamp lives to minimum 0 to prevent negative values
+        if (lives < 0) lives = 0;
         Debug.Log($"Life added. Lives: {lives}");
         NotifyLivesChanged();
     }
 
     private void NotifyLivesChanged() => OnLivesChanged?.Invoke(lives);
 
-    // Compatibility wrapper: some existing scripts call AddLives
     public void AddLives(int amount = 1)
     {
         AddLife(amount);
