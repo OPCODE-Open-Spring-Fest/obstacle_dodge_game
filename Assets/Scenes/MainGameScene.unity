@@ -269,11 +269,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_LocalScale.x
@@ -289,11 +289,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8904984050153628402, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_Pivot.x
@@ -3467,7 +3467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7239757817062342797, guid: e50cb583ba131ef428f99c349fde0fe3, type: 3}
       propertyPath: heartAmount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6117,6 +6117,10 @@ PrefabInstance:
     - target: {fileID: 4762909497786901136, guid: 76d20325ed3ec99428280f775a27e0fe, type: 3}
       propertyPath: m_Name
       value: PowerGems
+      objectReference: {fileID: 0}
+    - target: {fileID: 7892569056642716444, guid: 76d20325ed3ec99428280f775a27e0fe, type: 3}
+      propertyPath: gemDuration
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7892569056642716444, guid: 76d20325ed3ec99428280f775a27e0fe, type: 3}
       propertyPath: heartAmount
@@ -9673,7 +9677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1419174292
 Transform:
   m_ObjectHideFlags: 0
@@ -11965,6 +11969,10 @@ PrefabInstance:
       value: Collectible
       objectReference: {fileID: 0}
     - target: {fileID: 7892569056642716444, guid: 76d20325ed3ec99428280f775a27e0fe, type: 3}
+      propertyPath: gemDuration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7892569056642716444, guid: 76d20325ed3ec99428280f775a27e0fe, type: 3}
       propertyPath: heartAmount
       value: 0
       objectReference: {fileID: 0}
@@ -13190,7 +13198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7239757817062342797, guid: e50cb583ba131ef428f99c349fde0fe3, type: 3}
       propertyPath: heartAmount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13751,7 +13759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7239757817062342797, guid: e50cb583ba131ef428f99c349fde0fe3, type: 3}
       propertyPath: heartAmount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
