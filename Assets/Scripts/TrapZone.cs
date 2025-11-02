@@ -130,6 +130,10 @@ public class TrapZone : MonoBehaviour
         if (collectibles.IsInvincible) return;
         if (consumeOnce && triggered) return;
 
+        // Check if this will kill the player before removing hearts
+        int currentLives = collectibles.GetLives();
+        bool willDie = (currentLives - Mathf.Abs(heartsToRemove)) <= 0;
+        
         // Remove hearts
         collectibles.AddLife(-Mathf.Abs(heartsToRemove));
 
@@ -159,10 +163,11 @@ public class TrapZone : MonoBehaviour
             generateImpulseMethod.Invoke(impulseSourceComponent, null);
         }
 
-        // If no lives left, go to Game Over like in Scorer
-        if (collectibles.GetLives() <= 0)
+        // If no lives left, go to Game Over immediately
+        if (willDie || collectibles.GetLives() <= 0)
         {
             LastLevelRecorder.SaveAndLoad("GameOver");
+            return; // Exit early to prevent further processing
         }
 
         if (consumeOnce) triggered = true;

@@ -60,8 +60,11 @@ public class HeartsUI : MonoBehaviour
 
     private void UpdateHearts(int currentLives)
     {
+        // Clamp to 0 minimum to prevent negative index errors
+        if (currentLives < 0) currentLives = 0;
+        
         // Destroy or create heart images to match currentLives
-        while (hearts.Count > currentLives)
+        while (hearts.Count > currentLives && hearts.Count > 0)
         {
             var last = hearts[hearts.Count - 1];
             hearts.RemoveAt(hearts.Count - 1);
