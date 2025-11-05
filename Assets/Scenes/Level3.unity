@@ -4394,6 +4394,54 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 378.0391
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 75.1273
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Spacing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6876364486792518202, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_Name
       value: heartui
@@ -6919,6 +6967,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  speedBoostIcon: {fileID: 0}
+  shieldIcon: {fileID: 0}
+  hinderIcon: {fileID: 0}
+  powerupCountdownText: {fileID: 0}
 --- !u!65 &1843940773
 BoxCollider:
   m_ObjectHideFlags: 0
