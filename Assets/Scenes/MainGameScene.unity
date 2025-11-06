@@ -259,12 +259,68 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 98.64972
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 30.543915
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658268088546382497, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Spacing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6000123803956513116, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6876364486792518202, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_Name
       value: heartui
       objectReference: {fileID: 0}
     - target: {fileID: 6876364486792518202, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
+      propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8777896586649884543, guid: f3995e6a358389c488ba772776ea84e2, type: 3}
@@ -5622,7 +5678,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 171.27513, y: 0, z: 0, w: 0}
+  m_margin: {x: 171.27513, y: 7.8509216, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5652,7 +5708,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -83, y: -46}
+  m_AnchoredPosition: {x: 292, y: -159}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &863767236
@@ -7463,7 +7519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -386, y: 59}
+  m_AnchoredPosition: {x: -286, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1083936006
@@ -8068,6 +8124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  speedBoostIcon: {fileID: 0}
+  shieldIcon: {fileID: 0}
+  hinderIcon: {fileID: 0}
+  powerupCountdownText: {fileID: 0}
 --- !u!65 &1166695313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9530,7 +9590,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -386, y: 59}
+  m_AnchoredPosition: {x: -412, y: 100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1380062266
