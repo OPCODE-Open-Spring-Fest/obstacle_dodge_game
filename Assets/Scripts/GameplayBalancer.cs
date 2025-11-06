@@ -47,6 +47,12 @@ public class GameplayBalancer : MonoBehaviour
         currentObstacleSpeed = baseObstacleSpeed;
         lastDifficultyCheck = Time.time;
         
+        // Start gameplay music
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayGameplayMusic();
+        }
+        
         Debug.Log("Gameplay balancer initialized");
     }
     

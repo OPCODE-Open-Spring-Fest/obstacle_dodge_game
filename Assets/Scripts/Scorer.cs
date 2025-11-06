@@ -68,6 +68,11 @@ public class Scorer : MonoBehaviour
                 Quaternion impactRotation = Quaternion.identity;
                 Instantiate(collisionEffectPrefab, impactPoint, impactRotation);
             }
+            // Play collision sound effect
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayCollisionSFX();
+            }
             // Camera shake via Cinemachine impulse (if component exists)
             if (impulseSourceComponent != null && generateImpulseMethod != null)
             {

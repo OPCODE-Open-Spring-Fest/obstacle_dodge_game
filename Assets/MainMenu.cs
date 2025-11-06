@@ -3,6 +3,14 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        // Play menu music when main menu loads
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMenuMusic();
+        }
+    }
     [Tooltip("Name of the scene to open when Play is clicked. If empty, Build Index below will be used.")]
     public string levelSelectSceneName = "Levels";
 
