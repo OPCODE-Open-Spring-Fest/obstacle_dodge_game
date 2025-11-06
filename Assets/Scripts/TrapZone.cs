@@ -137,6 +137,12 @@ public class TrapZone : MonoBehaviour
     // Remove hearts
     collectibles.AddLife(-Mathf.Abs(heartsToRemove));
 
+    // Play collision SFX via AudioManager
+    if (AudioManager.Instance != null)
+    {
+      AudioManager.Instance.PlayCollisionSFX();
+    }
+
     // Spawn optional effect
     if (collisionEffectPrefab != null)
     {

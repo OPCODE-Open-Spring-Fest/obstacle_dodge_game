@@ -26,9 +26,19 @@ public class Collectible : MonoBehaviour
         {
             case CollectibleType.Heart:
                 p.AddLife(heartAmount);
+                // Play heart collect SFX via AudioManager if available
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlayHeartCollectSFX();
+                }
                 break;
             case CollectibleType.Gem:
                 p.UseGem(gemDuration);
+                // Play gem collect SFX via AudioManager if available
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlayGemCollectSFX();
+                }
                 break;
         }
 
