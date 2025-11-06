@@ -21,6 +21,12 @@ public class ObjectHit : MonoBehaviour
 
             meshRenderer.material.color = Color.red;
             gameObject.tag = "Hit";
+
+            // Play collision SFX via AudioManager
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayCollisionSFX();
+            }
         }
     }
 }
