@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2243446984231385563}
-  - component: {fileID: 2458713231429789686}
-  - component: {fileID: 8798419928603145552}
+  - component: {fileID: 3711800595947773198}
+  - component: {fileID: 6797169245328721721}
   m_Layer: 0
   m_Name: CurseGem
-  m_TagString: Untagged
+  m_TagString: Collectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 3055035999985453476}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2458713231429789686
+--- !u!65 &3711800595947773198
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,7 +55,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.84, y: 3.75, z: 1}
   m_Center: {x: -2.46, y: 2.89, z: 4.79}
---- !u!114 &8798419928603145552
+--- !u!114 &6797169245328721721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
