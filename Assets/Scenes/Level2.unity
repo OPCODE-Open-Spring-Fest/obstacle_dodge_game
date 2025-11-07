@@ -5559,6 +5559,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025086483}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1029637631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1029637633}
+  - component: {fileID: 1029637632}
+  m_Layer: 0
+  m_Name: SkinSceneApplier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1029637632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029637631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8f7712c7950b444aaa0520259e6f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkinApplierObstacles
+  obstacleTag: Obstacle
+--- !u!4 &1029637633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029637631}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.93163, y: 0, z: 14.53417}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1038292133
 GameObject:
   m_ObjectHideFlags: 0
@@ -6449,7 +6494,7 @@ GameObject:
   - component: {fileID: 1125728045}
   m_Layer: 0
   m_Name: environment
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9604,7 +9649,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2243446984231385563, guid: 997ed759ecc30074782a8f1386d2076e, type: 3}
   m_PrefabInstance: {fileID: 1489332556}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 --- !u!114 &1753414387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9731,8 +9775,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> 9e1abd1cf0fa0c3b4a9e5bdde5998262a5370213
 --- !u!1001 &1770307330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11294,6 +11336,19 @@ MeshFilter:
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
+
+
+
+
+
+
+
+
+
+
+
+
+
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 164966382}
@@ -11309,16 +11364,18 @@ SceneRoots:
   - {fileID: 1420478972}
   - {fileID: 639029816}
   - {fileID: 464348967}
-<<<<<<< HEAD
   - {fileID: 1766381959}
   - {fileID: 1633652799}
   - {fileID: 914487474}
   - {fileID: 1869064798}
   - {fileID: 825389308}
   - {fileID: 899481701}
-=======
   - {fileID: 631029610}
   - {fileID: 426222739}
   - {fileID: 165054083}
   - {fileID: 1463401776}
->>>>>>> 9e1abd1cf0fa0c3b4a9e5bdde5998262a5370213
+
+
+
+
+

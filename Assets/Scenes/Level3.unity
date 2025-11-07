@@ -1169,6 +1169,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &275959490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 275959492}
+  - component: {fileID: 275959491}
+  m_Layer: 0
+  m_Name: SkinSceneApplier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &275959491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275959490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8f7712c7950b444aaa0520259e6f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkinApplierObstacles
+  obstacleTag: Obstacle
+--- !u!4 &275959492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275959490}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.93163, y: 0, z: 14.53417}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &279483018
 GameObject:
   m_ObjectHideFlags: 0
@@ -6146,7 +6191,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 929888904}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-<<<<<<< HEAD
 --- !u!1001 &938555114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6204,7 +6248,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f7e3a5ea486a9438b4cd3142c7dc92, type: 3}
-=======
 --- !u!1 &938075630
 GameObject:
   m_ObjectHideFlags: 0
@@ -6316,7 +6359,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957635816}
   m_CullTransparentMesh: 1
->>>>>>> 9e1abd1cf0fa0c3b4a9e5bdde5998262a5370213
 --- !u!1 &973202203
 GameObject:
   m_ObjectHideFlags: 0
@@ -9685,17 +9727,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-<<<<<<< HEAD
   speedBoostIcon: {fileID: 0}
   shieldIcon: {fileID: 0}
   hinderIcon: {fileID: 0}
   powerupCountdownText: {fileID: 0}
-=======
   speedBoostIcon: {fileID: 1528210455}
   shieldIcon: {fileID: 0}
   hinderIcon: {fileID: 1403052512}
   powerupCountdownText: {fileID: 1549749968}
->>>>>>> 9e1abd1cf0fa0c3b4a9e5bdde5998262a5370213
 --- !u!65 &1843940773
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10594,7 +10633,7 @@ GameObject:
   - component: {fileID: 1967169984}
   m_Layer: 0
   m_Name: environment
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11154,13 +11193,11 @@ SceneRoots:
   - {fileID: 1723843061}
   - {fileID: 1005207975}
   - {fileID: 839507187}
-<<<<<<< HEAD
   - {fileID: 938555114}
   - {fileID: 1753300358}
-=======
   - {fileID: 467487307}
   - {fileID: 132226777}
   - {fileID: 466839173}
   - {fileID: 865509809}
   - {fileID: 533965471}
->>>>>>> 9e1abd1cf0fa0c3b4a9e5bdde5998262a5370213
+
