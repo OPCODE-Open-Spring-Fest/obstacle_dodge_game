@@ -178,6 +178,11 @@ public class EnemyFollower : MonoBehaviour
         if (collectibles.IsInvincible) return;
 
         collectibles.AddLife(-Mathf.Abs(heartDamage));
+        if (collectibles.GetLives() <= 0)
+        {
+            Debug.Log("EnemyFollower: player hearts depleted. Loading Game Over.");
+            LastLevelRecorder.SaveAndLoad("GameOver");
+        }
 
         SpawnHitEffect(hitPoint);
         lastDamageTime = Time.time;

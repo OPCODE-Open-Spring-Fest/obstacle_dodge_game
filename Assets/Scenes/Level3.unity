@@ -9253,11 +9253,11 @@ MonoBehaviour:
   lockYPosition: 1
   heartDamage: 1
   damageCooldown: 1.5
-  hitEffectPrefab: {fileID: 1781949194303238870, guid: 4e35892e4c5444340a0e2189311808e5, type: 3}
+  hitEffectPrefab: {fileID: 4726282497703084394, guid: babeb394aea02c741b67a8d9a1bcb9c8, type: 3}
   obstacleCheckRadius: 0.5
   obstacleLayers:
     serializedVersion: 2
-    m_Bits: 4294967291
+    m_Bits: 51
 --- !u!65 &1737132265
 BoxCollider:
   m_ObjectHideFlags: 0
