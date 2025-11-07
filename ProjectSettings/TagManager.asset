@@ -7,6 +7,7 @@ TagManager:
   - Hit
   - Collectible
   - Obstacles
+  - Obstacle
   layers:
   - Default
   - TransparentFX
