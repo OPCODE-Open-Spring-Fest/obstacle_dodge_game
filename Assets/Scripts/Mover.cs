@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Mover : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
@@ -9,18 +10,22 @@ public class Mover : MonoBehaviour
     private float originalSpeed;
     private Vector3 originalScale;
 
-    // Optional HUD icons (assign in Inspector if used)
+    private Rigidbody rb;
+    private bool isKnockedBack = false;
+
     public Image speedBoostIcon;
     public Image shieldIcon;
     public Image hinderIcon;
-    // Optional HUD countdown text for active powerup
     public Text powerupCountdownText;
-    
+
     void Start()
     {
         PrintInstructions();
         originalSpeed = moveSpeed;
         originalScale = transform.localScale;
+
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
 
         if (speedBoostIcon != null) speedBoostIcon.enabled = false;
         if (shieldIcon != null) shieldIcon.enabled = false;
@@ -30,28 +35,43 @@ public class Mover : MonoBehaviour
 
     void Update()
     {
-        MovePlayer();
+        HandleMovementInput();
     }
 
-    void PrintInstructions() {
+    void FixedUpdate()
+    {
+        if (!isKnockedBack)
+        {
+            rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
+        }
+    }
+    void HandleMovementInput()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        movement = new Vector3(horizontal * moveSpeed, 0f, vertical * moveSpeed);
+    }
+    public void Knockback(Vector3 direction, float force)
+    {
+        if (isKnockedBack) return;
+        StartCoroutine(KnockbackRoutine(direction, force));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector3 direction, float force)
+    {
+        isKnockedBack = true;
+        rb.AddForce(direction * force, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(0.15f);
+        isKnockedBack = false;
+    }
+
+    void PrintInstructions()
+    {
         Debug.Log("WELCOME TO THE GAME!");
         Debug.Log("W A S D!");
     }
-    
-    void MovePlayer() {
-        // Cache input values to avoid multiple calls
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        
-        // Only move if there's input
-        if (horizontal != 0f || vertical != 0f)
-        {
-            movement.Set(horizontal * Time.deltaTime * moveSpeed, 0f, vertical * Time.deltaTime * moveSpeed);
-            transform.Translate(movement);
-        }
-    }
-
-    // Powerup entry point (called by Powerup.cs)
     public void ApplyPowerup(Powerup.PowerupType type, float duration, float multiplier)
     {
         if (type == Powerup.PowerupType.Hinder)
@@ -64,12 +84,9 @@ public class Mover : MonoBehaviour
         }
         else if (type == Powerup.PowerupType.Shield)
         {
-            // Shield handled elsewhere in your project if present
-            // Placeholder for compatibility
+            // shield
         }
-        // ScoreMultiplier can be handled where scoring occurs
     }
-
     private IEnumerator HinderCoroutine(float duration, float multiplier)
     {
         moveSpeed *= multiplier;
@@ -80,22 +97,18 @@ public class Mover : MonoBehaviour
             powerupCountdownText.enabled = true;
             powerupCountdownText.text = FormatCountdown("Hinder", duration);
         }
-        float endTime = Time.time + duration;
-        while (Time.time < endTime)
+        float end = Time.time + duration;
+        while (Time.time < end)
         {
             if (powerupCountdownText != null)
-            {
-                powerupCountdownText.text = FormatCountdown("Hinder", endTime - Time.time);
-            }
+                powerupCountdownText.text = FormatCountdown("Hinder", end - Time.time);
             yield return null;
         }
-
         moveSpeed = originalSpeed;
         transform.localScale = originalScale;
         if (hinderIcon != null) hinderIcon.enabled = false;
         if (powerupCountdownText != null) powerupCountdownText.enabled = false;
     }
-
     private IEnumerator SpeedBoostCoroutine(float duration, float multiplier)
     {
         float prev = moveSpeed;
@@ -106,32 +119,26 @@ public class Mover : MonoBehaviour
             powerupCountdownText.enabled = true;
             powerupCountdownText.text = FormatCountdown("Speed+", duration);
         }
-        float endTime = Time.time + duration;
-        while (Time.time < endTime)
+        float end = Time.time + duration;
+        while (Time.time < end)
         {
             if (powerupCountdownText != null)
-            {
-                powerupCountdownText.text = FormatCountdown("Speed+", endTime - Time.time);
-            }
+                powerupCountdownText.text = FormatCountdown("Speed+", end - Time.time);
             yield return null;
         }
-
         moveSpeed = prev;
         if (speedBoostIcon != null) speedBoostIcon.enabled = false;
         if (powerupCountdownText != null) powerupCountdownText.enabled = false;
     }
 
-    // Slow zone helpers
     public void ChangeSpeed(float multiplier)
     {
         moveSpeed *= multiplier;
     }
-
     public void ResetSpeed()
     {
         moveSpeed = originalSpeed;
     }
-
     private string FormatCountdown(string label, float seconds)
     {
         if (seconds < 0f) seconds = 0f;
