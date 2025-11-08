@@ -3,30 +3,32 @@ using UnityEngine;
 public class ObjectHit : MonoBehaviour
 {
     private MeshRenderer meshRenderer;
-    
+    private bool hasBeenHit = false;
+
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
     }
-    
+
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!other.gameObject.CompareTag("Player")) return;
+        PlayerCollectibles collectibles = other.gameObject.GetComponent<PlayerCollectibles>();
+        if (collectibles != null && collectibles.IsInvincible)
         {
-            var collectibles = other.gameObject.GetComponent<PlayerCollectibles>();
-            if (collectibles != null && collectibles.IsInvincible)
-            {
-                return;
-            }
-
-            meshRenderer.material.color = Color.red;
-            gameObject.tag = "Hit";
-
-            // Play collision SFX via AudioManager
-            if (AudioManager.Instance != null)
-            {
-                AudioManager.Instance.PlayCollisionSFX();
-            }
+            return;
         }
+        if (hasBeenHit) return;
+        hasBeenHit = true;
+
+        meshRenderer.material.color = Color.red;
+        gameObject.tag = "Hit";
+
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCollisionSFX();
+        }
+        other.gameObject.GetComponent<Mover>()?.Knockback(-other.contacts[0].normal, 5f);
     }
 }
