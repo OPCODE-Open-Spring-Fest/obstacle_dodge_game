@@ -179,6 +179,9 @@ public class Mover : MonoBehaviour
 
     public void ChangeSpeed(float multiplier) => moveSpeed *= multiplier;
     public void ResetSpeed() => moveSpeed = originalSpeed;
+    public void SetSpeed(float newSpeed) => moveSpeed = newSpeed;
+    public float GetSpeed() => moveSpeed;
+    public float GetBaseSpeed() => originalSpeed;
 
     private string FormatCountdown(string label, float seconds)
     {
