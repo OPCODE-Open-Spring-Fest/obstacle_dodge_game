@@ -1183,6 +1183,7 @@ GameObject:
   - component: {fileID: 1106560886}
   - component: {fileID: 1106560885}
   - component: {fileID: 1106560895}
+  - component: {fileID: 1106560896}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1397,6 +1398,30 @@ MonoBehaviour:
   disableMoverScript: 1
   airControl: 0.5
   useSpaceForJump: 1
+--- !u!114 &1106560896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106560884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathAnimator
+  deathType: 1
+  animationDuration: 1.5
+  delayBeforeGameOver: 0.5
+  particleBlastPrefab: {fileID: 100006, guid: 10b506478f435cf4ca5bbcf982c59f08, type: 3}
+  particleCount: 50
+  blastForce: 10
+  particleColor: {r: 1, g: 1, b: 1, a: 1}
+  sparklePrefab: {fileID: 100004, guid: 7c687a4414095c349a8ec5ac5f3cccb2, type: 3}
+  sparkleCount: 30
+  sparkleDuration: 2
+  sparkleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  sparkleSpread: 5
 --- !u!1 &1206430768
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,9 +2660,6 @@ MonoBehaviour:
   player: {fileID: 1106560884}
   checkEveryFrame: 1
   checkInterval: 0.1
-  playFallSound: 1
-  fallEffectPrefab: {fileID: 0}
-  gameOverDelay: 0.5
 --- !u!114 &1989886831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2651,10 +2673,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParkourDeathZone
   useTrigger: 1
-  playDeathSound: 1
-  deathEffectPrefab: {fileID: 0}
-  gameOverDelay: 0.5
-  triggerCameraShake: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

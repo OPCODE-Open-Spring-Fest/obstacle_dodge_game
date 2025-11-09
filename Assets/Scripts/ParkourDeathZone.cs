@@ -1,27 +1,9 @@
 using UnityEngine;
 
-/// <summary>
-/// Script for parkour levels that triggers game over when player touches a death zone.
-/// Works with both trigger and non-trigger colliders.
-/// Attach this to any collider that should kill the player on contact.
-/// </summary>
 public class ParkourDeathZone : MonoBehaviour
 {
     [Header("Death Zone Settings")]
-    [Tooltip("If true, the collider must be a trigger. If false, uses collision detection.")]
     [SerializeField] private bool useTrigger = true;
-    
-    [Tooltip("Optional: Play sound effect when player touches death zone")]
-    [SerializeField] private bool playDeathSound = true;
-    
-    [Tooltip("Optional: Spawn an effect at the collision point")]
-    [SerializeField] private GameObject deathEffectPrefab;
-    
-    [Tooltip("Optional: Delay before loading game over scene")]
-    [SerializeField] private float gameOverDelay = 0.5f;
-    
-    [Tooltip("Optional: Camera shake on death (requires Cinemachine Impulse Source)")]
-    [SerializeField] private bool triggerCameraShake = false;
     
     private Component impulseSourceComponent;
     private System.Reflection.MethodInfo generateImpulseMethod;
@@ -29,7 +11,6 @@ public class ParkourDeathZone : MonoBehaviour
     
     private void Awake()
     {
-        // Setup camera shake (optional Cinemachine integration)
         var impulseType = System.Type.GetType("Cinemachine.CinemachineImpulseSource, Cinemachine");
         if (impulseType == null)
         {
@@ -55,7 +36,6 @@ public class ParkourDeathZone : MonoBehaviour
         }
         else
         {
-            // Set collider to trigger if useTrigger is true
             if (useTrigger && !col.isTrigger)
             {
                 col.isTrigger = true;
@@ -69,81 +49,62 @@ public class ParkourDeathZone : MonoBehaviour
         }
     }
     
-    // For trigger colliders
     private void OnTriggerEnter(Collider other)
     {
-        if (!useTrigger) return; // Only process if using trigger mode
+        if (!useTrigger) return;
         
         if (!other.CompareTag("Player"))
         {
             return;
         }
         
-        TriggerGameOver(other);
+        TriggerGameOver(other.gameObject);
     }
     
-    // For non-trigger colliders (collision detection)
     private void OnCollisionEnter(Collision collision)
     {
-        if (useTrigger) return; // Only process if using collision mode
+        if (useTrigger) return;
         
         if (!collision.gameObject.CompareTag("Player"))
         {
             return;
         }
         
-        // Get the collider from the collision
-        Collider other = collision.collider;
-        TriggerGameOver(other);
+        TriggerGameOver(collision.gameObject);
     }
     
-    private void TriggerGameOver(Collider playerCollider)
+    private void TriggerGameOver(GameObject playerObject)
     {
         if (gameOverTriggered)
         {
-            return; // Prevent multiple triggers
+            return;
         }
         
         gameOverTriggered = true;
         Debug.Log($"[ParkourDeathZone] Player touched death zone on {gameObject.name}. Game Over!");
         
-        // Play death sound
-        if (playDeathSound && AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayCollisionSFX();
-        }
-        
-        // Spawn death effect
-        if (deathEffectPrefab != null)
-        {
-            Vector3 spawnPos = playerCollider.ClosestPoint(transform.position);
-            Instantiate(deathEffectPrefab, spawnPos, Quaternion.identity);
-        }
-        
-        // Camera shake
-        if (triggerCameraShake && impulseSourceComponent != null && generateImpulseMethod != null)
+        if (impulseSourceComponent != null && generateImpulseMethod != null)
         {
             generateImpulseMethod.Invoke(impulseSourceComponent, null);
         }
         
-        // Trigger game over after delay
-        Invoke(nameof(LoadGameOver), gameOverDelay);
+        PlayerDeathAnimator deathAnimator = playerObject.GetComponent<PlayerDeathAnimator>();
+        if (deathAnimator != null)
+        {
+            deathAnimator.PlayDeathAnimation();
+        }
+        else
+        {
+            LastLevelRecorder.SaveAndLoad("GameOver");
+        }
     }
     
-    private void LoadGameOver()
-    {
-        LastLevelRecorder.SaveAndLoad("GameOver");
-    }
-    
-    /// <summary>
-    /// Draws gizmos in the Scene view to visualize the death zone
-    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
-            Gizmos.color = new Color(1f, 0f, 0f, 0.5f); // Red with transparency
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
             if (col is BoxCollider)
             {
                 BoxCollider box = col as BoxCollider;
