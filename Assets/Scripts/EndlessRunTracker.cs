@@ -23,6 +23,7 @@ public class EndlessRunTracker : MonoBehaviour
     [Header("Player Reference")]
     [SerializeField] private GameObject player;
     [SerializeField] private Mover mover;
+    [SerializeField] private EndlessRunnerMover endlessMover;
 
     private float gameStartTime;
     private float lastSpeedIncreaseTime;
@@ -59,12 +60,29 @@ public class EndlessRunTracker : MonoBehaviour
             }
         }
 
-        if (mover == null && player != null)
+        if (endlessMover == null && player != null)
+        {
+            endlessMover = player.GetComponent<EndlessRunnerMover>();
+        }
+        
+        if (mover == null && player != null && endlessMover == null)
         {
             mover = player.GetComponent<Mover>();
         }
 
-        if (mover != null)
+        if (endlessMover != null)
+        {
+            float baseSpeedValue = endlessMover.GetBaseSpeed();
+            if (baseSpeedValue > 0.1f)
+            {
+                baseSpeed = baseSpeedValue;
+            }
+            else
+            {
+                baseSpeed = endlessMover.GetSpeed();
+            }
+        }
+        else if (mover != null)
         {
             float baseSpeedValue = mover.GetBaseSpeed();
             if (baseSpeedValue > 0.1f)
@@ -99,9 +117,16 @@ public class EndlessRunTracker : MonoBehaviour
             UpdateDistance();
         }
 
-        if (enableSpeedIncrease && mover != null)
+        if (enableSpeedIncrease)
         {
-            IncreaseSpeedOverTime();
+            if (endlessMover != null)
+            {
+                IncreaseSpeedOverTime();
+            }
+            else if (mover != null)
+            {
+                IncreaseSpeedOverTime();
+            }
         }
 
         UpdateUI();
@@ -125,7 +150,11 @@ public class EndlessRunTracker : MonoBehaviour
                 currentSpeedMultiplier += speedIncreaseRate;
                 currentSpeedMultiplier = Mathf.Min(currentSpeedMultiplier, maxSpeedMultiplier);
                 
-                if (mover != null)
+                if (endlessMover != null)
+                {
+                    endlessMover.SetSpeed(baseSpeed * currentSpeedMultiplier);
+                }
+                else if (mover != null)
                 {
                     mover.SetSpeed(baseSpeed * currentSpeedMultiplier);
                 }

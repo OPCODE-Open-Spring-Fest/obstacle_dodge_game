@@ -247,7 +247,7 @@ Transform:
   m_GameObject: {fileID: 107933163}
   serializedVersion: 2
   m_LocalRotation: {x: 0.20314598, y: -0.0010157359, z: 0.00021073695, w: 0.9791479}
-  m_LocalPosition: {x: 0.01, y: 2.34, z: -1.2900002}
+  m_LocalPosition: {x: 0.01, y: 2.35, z: -1.2900002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -419,6 +419,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSpawner
   groundTile: {fileID: 6370770336491763807, guid: 3ecaf7639e2e4ae428ca8acf71661bf2, type: 3}
+  spawnAheadDistance: 50
+  minTilesAhead: 5
 --- !u!4 &758042489
 Transform:
   m_ObjectHideFlags: 0
@@ -677,7 +679,7 @@ Transform:
   m_GameObject: {fileID: 1090058341}
   serializedVersion: 2
   m_LocalRotation: {x: 0.20314598, y: -0.001015736, z: 0.000210737, w: 0.9791479}
-  m_LocalPosition: {x: 0.01, y: 2.34, z: -1.2900002}
+  m_LocalPosition: {x: 0.01, y: 2.35, z: -1.2900002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -698,8 +700,7 @@ GameObject:
   - component: {fileID: 1106560889}
   - component: {fileID: 1106560885}
   - component: {fileID: 1106560896}
-  - component: {fileID: 1106560897}
-  - component: {fileID: 1106560898}
+  - component: {fileID: 1106560899}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -832,7 +833,7 @@ Transform:
   m_GameObject: {fileID: 1106560884}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 3.53}
+  m_LocalPosition: {x: 0, y: 0.26, z: 3.53}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -862,7 +863,7 @@ MonoBehaviour:
   sparkleDuration: 2
   sparkleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   sparkleSpread: 5
---- !u!114 &1106560897
+--- !u!114 &1106560899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -871,32 +872,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1106560884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4168b4524d119684ba3749f122056427, type: 3}
+  m_Script: {fileID: 11500000, guid: f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Mover
+  m_EditorClassIdentifier: Assembly-CSharp::EndlessRunnerMover
   moveSpeed: 10
-  dashSpeed: 30
-  dashDuration: 0.2
-  dashCooldown: 5
-  postDashInvincibility: 1
-  speedBoostIcon: {fileID: 0}
-  shieldIcon: {fileID: 0}
-  hinderIcon: {fileID: 0}
-  powerupCountdownText: {fileID: 0}
---- !u!114 &1106560898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1106560884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21200a1ebe2dad0428c2c535fe7328dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scorer
-  defaultLimit: 15
-  collisionEffectPrefab: {fileID: 0}
+  horizontalSpeed: 10
+  useGravity: 1
+  freezeRotation: 1
 --- !u!1 &1195171381
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +968,7 @@ MonoBehaviour:
   distanceFormat: 'Distance: {0:F1}m'
   player: {fileID: 1106560884}
   mover: {fileID: 0}
+  endlessMover: {fileID: 0}
 --- !u!4 &1233100333
 Transform:
   m_ObjectHideFlags: 0
