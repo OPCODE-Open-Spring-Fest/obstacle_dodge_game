@@ -61,13 +61,11 @@ public class GameplayBalancer : MonoBehaviour
         {
             float gameTime = Time.time - gameStartTime;
             
-            // Gradually increase spawn rate
             currentSpawnRate = Mathf.Min(
                 baseSpawnRate + (gameTime * difficultyIncreaseRate),
                 maxSpawnRate
             );
             
-            // Gradually increase obstacle speed
             currentObstacleSpeed = Mathf.Min(
                 baseObstacleSpeed + (gameTime * speedIncreaseRate),
                 maxObstacleSpeed

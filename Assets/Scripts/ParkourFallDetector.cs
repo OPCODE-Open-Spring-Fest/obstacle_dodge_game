@@ -61,15 +61,7 @@ public class ParkourFallDetector : MonoBehaviour
         gameOverTriggered = true;
         Debug.Log($"[ParkourFallDetector] Player fell below threshold ({fallThreshold}). Game Over!");
         
-        PlayerDeathAnimator deathAnimator = player.GetComponent<PlayerDeathAnimator>();
-        if (deathAnimator != null)
-        {
-            deathAnimator.PlayDeathAnimation();
-        }
-        else
-        {
-            LastLevelRecorder.SaveAndLoad("GameOver");
-        }
+        DeathHelper.TriggerDeath(player);
     }
     
     private void OnDrawGizmosSelected()
