@@ -181,7 +181,7 @@ public class EnemyFollower : MonoBehaviour
         if (collectibles.GetLives() <= 0)
         {
             Debug.Log("EnemyFollower: player hearts depleted. Loading Game Over.");
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            DeathHelper.TriggerDeath(other.gameObject);
         }
 
         SpawnHitEffect(hitPoint);
