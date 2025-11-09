@@ -83,7 +83,7 @@ public class Scorer : MonoBehaviour
             if (collectibles.GetLives() <= 0)
             {
                 Debug.Log("No lives left. Loading Game Over scene...");
-                LastLevelRecorder.SaveAndLoad("GameOver");
+                DeathHelper.TriggerDeath(gameObject);
             }
             return;
         }
@@ -94,7 +94,7 @@ public class Scorer : MonoBehaviour
         if (hits >= defaultLimit)
         {
             Debug.Log("Max hit limit reached! Loading Game Over scene...");
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            DeathHelper.TriggerDeath(gameObject);
         }
     }
 }

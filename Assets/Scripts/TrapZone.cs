@@ -169,11 +169,10 @@ public class TrapZone : MonoBehaviour
       generateImpulseMethod.Invoke(impulseSourceComponent, null);
     }
 
-    // If no lives left, go to Game Over immediately
     if (willDie || collectibles.GetLives() <= 0)
     {
-      LastLevelRecorder.SaveAndLoad("GameOver");
-      return; // Exit early to prevent further processing
+      DeathHelper.TriggerDeath(other.gameObject);
+      return;
     }
 
     if (consumeOnce) triggered = true;
