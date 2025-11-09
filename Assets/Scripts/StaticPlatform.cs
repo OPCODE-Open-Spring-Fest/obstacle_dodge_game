@@ -49,23 +49,31 @@ public class StaticPlatform : MonoBehaviour
             }
         }
         
-        // Ensure collider exists and is not a trigger
         Collider col = GetComponent<Collider>();
         if (col == null)
         {
-            // Try to add a BoxCollider if no collider exists
-            if (GetComponent<MeshRenderer>() != null)
-            {
-                col = gameObject.AddComponent<BoxCollider>();
-                Debug.Log($"[StaticPlatform] Added BoxCollider to {gameObject.name}.");
-            }
+            BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(1f, 0.1f, 1f);
+            Debug.Log($"[StaticPlatform] Added BoxCollider to {gameObject.name}.");
+            col = boxCollider;
         }
         
-        if (col != null && col.isTrigger)
+        if (col != null)
         {
-            // If it's a trigger, make it a solid collider for platforms
-            col.isTrigger = false;
-            Debug.Log($"[StaticPlatform] Changed collider on {gameObject.name} from trigger to solid.");
+            if (col.isTrigger)
+            {
+                col.isTrigger = false;
+                Debug.Log($"[StaticPlatform] Changed collider on {gameObject.name} from trigger to solid.");
+            }
+            
+            if (col is BoxCollider)
+            {
+                BoxCollider box = col as BoxCollider;
+                if (box.size.y < 0.2f)
+                {
+                    box.size = new Vector3(box.size.x, Mathf.Max(0.2f, box.size.y), box.size.z);
+                }
+            }
         }
     }
     
