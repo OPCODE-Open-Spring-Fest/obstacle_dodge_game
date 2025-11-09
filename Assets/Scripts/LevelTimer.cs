@@ -1,17 +1,48 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
-/// <summary>
-/// Tracks the time elapsed since the level started.
-/// Used to calculate completion time for saving best times.
-/// </summary>
+
 public class LevelTimer : MonoBehaviour
 {
+    public Text countdownText; // Assign in inspector
+    public float countdownFrom = 3f;
+
     private float levelStartTime;
     private bool isTimerRunning = false;
     private int currentLevelIndex;
 
     private void Start()
     {
+        StartCoroutine(CountdownAndStart());
+    }
+
+    private IEnumerator CountdownAndStart()
+    {
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(true);
+        }
+        
+        Time.timeScale = 0f; // Pause the game
+
+        float countdown = countdownFrom;
+        while (countdown > 0)
+        {
+            if (countdownText != null)
+            {
+                countdownText.text = Mathf.Ceil(countdown).ToString();
+            }
+            yield return new WaitForSecondsRealtime(1f);
+            countdown--;
+        }
+
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(false);
+        }
+        
+        Time.timeScale = 1f; // Resume the game
         StartTimer();
     }
 
@@ -74,4 +105,3 @@ public class LevelTimer : MonoBehaviour
         Debug.Log($"Level {currentLevelIndex} timer reset");
     }
 }
-
