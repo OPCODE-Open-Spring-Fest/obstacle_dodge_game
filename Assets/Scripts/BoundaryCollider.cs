@@ -1,19 +1,9 @@
 using UnityEngine;
 
-/// <summary>
-/// Script to attach to boundary colliders around the gameplay area.
-/// When the player touches these boundaries, the game immediately ends.
-/// Make sure the collider is set as a Trigger.
-/// </summary>
 public class BoundaryCollider : MonoBehaviour
 {
-    [Tooltip("Optional: Play collision sound effect when player hits boundary")]
     public bool playCollisionSound = true;
-    
-    [Tooltip("Optional: Spawn an effect at the collision point")]
     public GameObject collisionEffectPrefab;
-    
-    [Tooltip("Optional: Camera shake on collision (requires Cinemachine Impulse Source)")]
     public bool triggerCameraShake = false;
     
     private Component impulseSourceComponent;
@@ -21,12 +11,9 @@ public class BoundaryCollider : MonoBehaviour
 
     private void Awake()
     {
-        // Setup camera shake (optional Cinemachine integration)
-        // Try to get CinemachineImpulseSource without compile-time reference
         var impulseType = System.Type.GetType("Cinemachine.CinemachineImpulseSource, Cinemachine");
         if (impulseType == null)
         {
-            // Fallback by component name
             impulseSourceComponent = GetComponent("CinemachineImpulseSource") as Component;
         }
         else
@@ -42,7 +29,6 @@ public class BoundaryCollider : MonoBehaviour
 
     private void Start()
     {
-        // Ensure collider is set as trigger
         Collider col = GetComponent<Collider>();
         if (col != null && !col.isTrigger)
         {
@@ -64,27 +50,23 @@ public class BoundaryCollider : MonoBehaviour
 
         Debug.Log("Player touched boundary! Game Over.");
 
-        // Play collision sound
         if (playCollisionSound && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayCollisionSFX();
         }
 
-        // Spawn collision effect
         if (collisionEffectPrefab != null)
         {
             Vector3 spawnPos = other.ClosestPoint(transform.position);
             Instantiate(collisionEffectPrefab, spawnPos, Quaternion.identity);
         }
 
-        // Camera shake
         if (triggerCameraShake && impulseSourceComponent != null && generateImpulseMethod != null)
         {
             generateImpulseMethod.Invoke(impulseSourceComponent, null);
         }
 
-        // Immediately trigger game over
-        LastLevelRecorder.SaveAndLoad("GameOver");
+        DeathHelper.TriggerDeath(other.gameObject);
     }
 
     private void OnDrawGizmosSelected()
@@ -92,7 +74,7 @@ public class BoundaryCollider : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
-            Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // Red with transparency
+            Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
             if (col is BoxCollider)
             {
                 BoxCollider box = col as BoxCollider;

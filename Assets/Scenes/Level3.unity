@@ -10395,6 +10395,7 @@ GameObject:
   - component: {fileID: 1843940777}
   - component: {fileID: 1843940778}
   - component: {fileID: 1843940779}
+  - component: {fileID: 1843940780}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -10634,6 +10635,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e143a82f0abad42805a802a143a76d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkinApplierPlayer
+--- !u!114 &1843940780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843940769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathAnimator
+  deathType: 1
+  animationDuration: 1.5
+  delayBeforeGameOver: 0.5
+  particleBlastPrefab: {fileID: 100000, guid: 53d301af6d66cf94497e9fcec3cb6699, type: 3}
+  particleCount: 50
+  blastForce: 10
+  particleColor: {r: 1, g: 1, b: 1, a: 1}
+  sparklePrefab: {fileID: 100006, guid: 50f1c35dedf5eb940a3ee61713626364, type: 3}
+  sparkleCount: 30
+  sparkleDuration: 2
+  sparkleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  sparkleSpread: 5
 --- !u!1 &1861152422
 GameObject:
   m_ObjectHideFlags: 0

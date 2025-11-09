@@ -57,4 +57,5 @@
         "Temp/": true
     },
     "dotnet.defaultSolution": "obg.slnx"
+    "dotnet.defaultSolution": "obstacle_dodge_game_MY.slnx"
 }
