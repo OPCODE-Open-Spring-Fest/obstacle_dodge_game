@@ -89,4 +89,10 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
 #endif
     }
+    public void GoToShop()
+    {
+        // This command loads the scene we created and named "Shop"
+        SceneManager.LoadScene("Shop");
+        Debug.Log("Loading Shop Scene...");
+    }
 }

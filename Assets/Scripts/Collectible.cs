@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public enum CollectibleType { Heart, Gem }
+public enum CollectibleType { Heart, Gem, Coin }
 
 public class Collectible : MonoBehaviour
 {
     public CollectibleType type = CollectibleType.Heart;
+    [Tooltip("How many coins this pickup gives (only for Coin type)")]
+    public int coinAmount = 1;
     [Tooltip("How many hearts this pickup gives (only for Heart type)")]
     public int heartAmount = 1;
     [Tooltip("Duration of invincibility in seconds (only for Gem type)")]
     public float gemDuration = 5f;
+
 
     private bool isCollected = false;
 
@@ -25,7 +28,7 @@ public class Collectible : MonoBehaviour
         switch (type)
         {
             case CollectibleType.Heart:
-                p.AddLife(heartAmount);
+                p.AddLife(heartAmount);//nigss
                 // Play heart collect SFX via AudioManager if available
                 if (AudioManager.Instance != null)
                 {
@@ -37,6 +40,14 @@ public class Collectible : MonoBehaviour
                 // Play gem collect SFX via AudioManager if available
                 if (AudioManager.Instance != null)
                 {
+                    AudioManager.Instance.PlayGemCollectSFX();
+                }
+                break;
+            case CollectibleType.Coin:
+                p.AddCoins(coinAmount);
+                if (AudioManager.Instance != null)
+                {
+                    Debug.Log("Playing gem collect SFX for coin collection.");
                     AudioManager.Instance.PlayGemCollectSFX();
                 }
                 break;
