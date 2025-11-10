@@ -2087,11 +2087,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1883817794}
   - component: {fileID: 1883817796}
-<<<<<<< HEAD
-=======
   - component: {fileID: 1883817795}
   - component: {fileID: 1883817797}
->>>>>>> 56747a05d5f2e6a50dba86cdc4b7379a33d540c9
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
