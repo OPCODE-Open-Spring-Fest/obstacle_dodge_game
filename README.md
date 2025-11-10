@@ -4,7 +4,7 @@ Welcome to **obstacle_dodge_game**, an open-source Unity game designed for the *
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Get ting Started
 
 ### Prerequisites
 

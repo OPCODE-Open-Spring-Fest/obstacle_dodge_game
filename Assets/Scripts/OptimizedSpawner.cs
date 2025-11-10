@@ -85,7 +85,6 @@ public class OptimizedSpawner : MonoBehaviour
         
         if (useObjectPooling && obstaclePool.Count > 0)
         {
-            // get from pool
             obstacle = obstaclePool[0];
             obstaclePool.RemoveAt(0);
             obstacle.SetActive(true);
@@ -94,11 +93,9 @@ public class OptimizedSpawner : MonoBehaviour
         }
         else
         {
-            // instantiate new
             obstacle = Instantiate(obstaclePrefab, spawnPoint.position, spawnPoint.rotation);
         }
         
-        // apply current speed to obstacle
         if (obstacle != null)
         {
             Rigidbody rb = obstacle.GetComponent<Rigidbody>();
@@ -118,7 +115,6 @@ public class OptimizedSpawner : MonoBehaviour
     {
         if (!useObjectPooling || playerTransform == null) return;
         
-        // check for obstacles that needs to be returned to pool
         for (int i = activeObstacles.Count - 1; i >= 0; i--)
         {
             GameObject obstacle = activeObstacles[i];
@@ -133,7 +129,6 @@ public class OptimizedSpawner : MonoBehaviour
             
             if (distance > despawnDistance)
             {
-                // return to pool
                 obstacle.SetActive(false);
                 obstaclePool.Add(obstacle);
                 activeObstacles.RemoveAt(i);
