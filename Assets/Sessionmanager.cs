@@ -1,14 +1,19 @@
 using UnityEngine;
- 
+
 public class SessionManager : MonoBehaviour
 {
     public static SessionManager Instance { get; private set; }
 
-    [Tooltip("The distance interval for setting a new checkpoint (e.g., every 500 units).")]
+    [Header("Checkpoint Settings")]
+    [Tooltip("How far (in meters) must the player run to set a new checkpoint?")]
     public float checkpointDistanceInterval = 500f;
 
-    [HideInInspector]
+    [Header("Lives Settings")]
+    [Tooltip("The total number of lives the player starts a session with.")]
+    public int maxLives = 3;
+
     public float LastCheckpointDistance { get; private set; } = 0f;
+    public int CurrentLives { get; private set; }
 
     private void Awake()
     {
@@ -16,6 +21,7 @@ public class SessionManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            CurrentLives = maxLives;
         }
         else
         {
@@ -23,29 +29,33 @@ public class SessionManager : MonoBehaviour
         }
     }
 
- 
     public void UpdateCheckpoint(float currentDistance)
     {
-        int checkpointsPassed = Mathf.FloorToInt(currentDistance / checkpointDistanceInterval);
-        
-        float newCheckpointDistance = checkpointsPassed * checkpointDistanceInterval;
-
-        if (newCheckpointDistance > LastCheckpointDistance)
+        if (currentDistance >= LastCheckpointDistance + checkpointDistanceInterval)
         {
-            LastCheckpointDistance = newCheckpointDistance;
-            Debug.Log($"New session checkpoint set at: {LastCheckpointDistance}");
+            LastCheckpointDistance = Mathf.Floor(currentDistance / checkpointDistanceInterval) * checkpointDistanceInterval;
+            Debug.Log($"New session checkpoint set: {LastCheckpointDistance}m");
         }
     }
 
- 
     public float GetSpawnDistance()
     {
         return LastCheckpointDistance;
     }
- 
+
+    public void SpendLife()
+    {
+        if (CurrentLives > 0)
+        {
+            CurrentLives--;
+            Debug.Log($"Player spent a life, {CurrentLives} remaining.");
+        }
+    }
+
     public void ResetSession()
     {
         LastCheckpointDistance = 0f;
-        Debug.Log("Session progress reset. Starting from 0.");
+        CurrentLives = maxLives;
+        Debug.Log("Session data reset. Lives and distance set to default.");
     }
 }

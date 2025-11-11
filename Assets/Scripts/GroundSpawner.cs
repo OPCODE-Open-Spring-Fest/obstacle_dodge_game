@@ -30,7 +30,6 @@ public class GroundSpawner : MonoBehaviour
     {
         gameManager = EndlessGameManager.Instance;
 
-        // Find player by tag
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
@@ -55,26 +54,29 @@ public class GroundSpawner : MonoBehaviour
             return;
         }
 
-        // Spawn initial tiles
+        SpawnInitialTiles(0f);
+        
+        isInitialized = true;
+    }
+
+    void SpawnInitialTiles(float startZ)
+    {
+        nextSpawnZ = startZ;
         for (int i = 0; i < tilesAhead; i++)
         {
             SpawnTile();
         }
-        
-        isInitialized = true;
     }
 
     void Update()
     {
         if (!isInitialized || player == null || (gameManager != null && !gameManager.isGameRunning)) return;
 
-        // Spawn new tiles ahead of player
         while (nextSpawnZ < player.position.z + (tilesAhead * tileLength))
         {
             SpawnTile();
         }
 
-        // Despawn tiles behind player
         while (spawnedTiles.Count > 0)
         {
             GameObject oldestTile = spawnedTiles.Peek();
@@ -109,5 +111,24 @@ public class GroundSpawner : MonoBehaviour
     public float GetGroundWidth()
     {
         return groundWidth;
+    }
+
+    public void ClearAllTiles()
+    {
+        while (spawnedTiles.Count > 0)
+        {
+            GameObject tile = spawnedTiles.Dequeue();
+            if (tile != null)
+            {
+                Destroy(tile);
+            }
+        }
+        spawnedTiles.Clear();
+    }
+
+    public void ResetForRespawn(float spawnDistance)
+    {
+        ClearAllTiles();
+        SpawnInitialTiles(spawnDistance);
     }
 }

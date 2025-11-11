@@ -25,49 +25,35 @@ public class PlayerEndlessMovement : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// NEW METHOD: Called by EndlessGameManager to set the player's start position.
-    /// </summary>
-    public void SetInitialPosition(float startDistance)
+    public void SetInitialPosition(float startZ)
     {
-        if (rb == null)
-        {
-            rb = GetComponent<Rigidbody>();
-        }
-
-        // Get current Y position to preserve it
-        float currentY = transform.position.y; 
-
-        // Set the Rigidbody's position
-        Vector3 startPos = new Vector3(0f, currentY, startDistance);
-        rb.position = startPos; 
-        
-        // Set the transform's position for good measure
-        transform.position = startPos;
-        
-        // Reset lateral position
+        transform.position = new Vector3(0, transform.position.y, startZ);
         currentLateralPosition = 0f;
+
+        // --- ADDED ---
+        // Ensure Rigidbody is stopped when teleporting
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     void Update()
     {
-        // Get input
         movementInput.x = Input.GetAxis("Horizontal");
         movementInput.y = Input.GetAxis("Vertical");
         
-        // Smooth input
         smoothedInput = Vector2.Lerp(smoothedInput, movementInput, Time.deltaTime * inputSmoothing);
     }
 
     void FixedUpdate()
     {
-        if (rb == null) return;
-        if (!EndlessGameManager.Instance.isGameRunning) return; // Don't move if game not running
+        if (rb == null || EndlessGameManager.Instance == null || !EndlessGameManager.Instance.isGameRunning) return;
 
-        // Always move forward
         Vector3 forwardMove = Vector3.forward * speed * Time.fixedDeltaTime;
         
-        // Lateral movement (left/right)
         if (useLateralMovement)
         {
             float lateralInput = smoothedInput.x;
@@ -76,19 +62,13 @@ public class PlayerEndlessMovement : MonoBehaviour
                 -maxLateralDistance,
                 maxLateralDistance
             );
+            currentLateralPosition = targetLateralPosition;
             
-            // This lerps the lateral position for smooth movement
-            currentLateralPosition = Mathf.Lerp(currentLateralPosition, targetLateralPosition, Time.fixedDeltaTime * lateralSpeed);
-            
-            // Calculate the target X position based on currentLateralPosition
-            Vector3 targetPosition = rb.position + forwardMove;
-            targetPosition.x = currentLateralPosition;
-            
-            rb.MovePosition(targetPosition);
+            Vector3 lateralMove = Vector3.right * (targetLateralPosition - transform.position.x);
+            rb.MovePosition(rb.position + forwardMove + lateralMove);
         }
         else
         {
-            // Original rotation-based movement
             rb.MovePosition(rb.position + forwardMove);
             
             if (movementInput != Vector2.zero)
