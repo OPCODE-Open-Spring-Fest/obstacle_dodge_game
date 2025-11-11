@@ -7,6 +7,10 @@ public class PlayerCollectibles : MonoBehaviour
     [SerializeField] private int lives = 3;
     public bool IsInvincible { get; private set; }
 
+    private const string COINS_KEY = "PlayerCoinsTotal";
+    private int currentCoins = 0;
+
+
     public event Action<int> OnLivesChanged;
     public event Action<float> OnInvincibilityStarted;
     public event Action OnInvincibilityEnded;
@@ -14,6 +18,11 @@ public class PlayerCollectibles : MonoBehaviour
     public int Lives => lives;
 
     public int GetLives() => lives;
+
+    private void Awake()
+    {
+        LoadCoins();
+    }
 
     public void AddLife(int amount = 1)
     {
@@ -45,8 +54,8 @@ public class PlayerCollectibles : MonoBehaviour
 
     private IEnumerator InvincibilityRoutine(float duration)
     {
-    IsInvincible = true;
-    var renderers = GetComponentsInChildren<Renderer>();
+        IsInvincible = true;
+        var renderers = GetComponentsInChildren<Renderer>();
         foreach (var r in renderers)
         {
             if (r.material != null)
@@ -69,4 +78,39 @@ public class PlayerCollectibles : MonoBehaviour
         IsInvincible = false;
         OnInvincibilityEnded?.Invoke();
     }
+
+    public int GetCoinsCOunt()
+    {
+        return currentCoins;
+    }
+    public void AddCoins(int coinValue)
+    {
+        currentCoins += coinValue;
+        SaveCoins();
+        Debug.Log($"Collected coin! Total coins: {currentCoins}");
+    }
+
+    public bool TrySpendCoins(int amount)
+    {
+        if (currentCoins >= amount)
+        {
+            currentCoins -= amount;
+            SaveCoins();
+            Debug.Log($"Spent {amount} coins, remaining coins {currentCoins}");
+            return true;
+        }
+        Debug.Log($"Failed to spend, need {amount} but have {currentCoins}");
+        return false;
+    }
+    private int LoadCoins()
+    {
+        currentCoins = PlayerPrefs.GetInt(COINS_KEY, 0);
+        return currentCoins;
+    }
+    private void SaveCoins()
+    {
+        PlayerPrefs.SetInt(COINS_KEY, currentCoins);
+        PlayerPrefs.Save();
+    }
+
 }
