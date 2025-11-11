@@ -3,20 +3,12 @@ using UnityEngine;
 public class PlayerEndlessMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [Tooltip("Forward movement speed")]
     public float speed = 5f;
-    
-    [Tooltip("Lateral movement speed (left/right)")]
     public float lateralSpeed = 5f;
-    
-    [Tooltip("Maximum lateral movement distance from center")]
     public float maxLateralDistance = 5f;
     
     [Header("Input Settings")]
-    [Tooltip("Use horizontal input for lateral movement")]
     public bool useLateralMovement = true;
-    
-    [Tooltip("Input smoothing")]
     public float inputSmoothing = 10f;
     
     private Rigidbody rb;
@@ -33,6 +25,30 @@ public class PlayerEndlessMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// NEW METHOD: Called by EndlessGameManager to set the player's start position.
+    /// </summary>
+    public void SetInitialPosition(float startDistance)
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+
+        // Get current Y position to preserve it
+        float currentY = transform.position.y; 
+
+        // Set the Rigidbody's position
+        Vector3 startPos = new Vector3(0f, currentY, startDistance);
+        rb.position = startPos; 
+        
+        // Set the transform's position for good measure
+        transform.position = startPos;
+        
+        // Reset lateral position
+        currentLateralPosition = 0f;
+    }
+
     void Update()
     {
         // Get input
@@ -46,6 +62,7 @@ public class PlayerEndlessMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (rb == null) return;
+        if (!EndlessGameManager.Instance.isGameRunning) return; // Don't move if game not running
 
         // Always move forward
         Vector3 forwardMove = Vector3.forward * speed * Time.fixedDeltaTime;
@@ -59,10 +76,15 @@ public class PlayerEndlessMovement : MonoBehaviour
                 -maxLateralDistance,
                 maxLateralDistance
             );
-            currentLateralPosition = targetLateralPosition;
             
-            Vector3 lateralMove = Vector3.right * (targetLateralPosition - transform.position.x);
-            rb.MovePosition(rb.position + forwardMove + lateralMove);
+            // This lerps the lateral position for smooth movement
+            currentLateralPosition = Mathf.Lerp(currentLateralPosition, targetLateralPosition, Time.fixedDeltaTime * lateralSpeed);
+            
+            // Calculate the target X position based on currentLateralPosition
+            Vector3 targetPosition = rb.position + forwardMove;
+            targetPosition.x = currentLateralPosition;
+            
+            rb.MovePosition(targetPosition);
         }
         else
         {

@@ -478,10 +478,10 @@ MonoBehaviour:
   isGameRunning: 0
   isGamePaused: 0
   pauseOnStart: 1
-  resetDistanceOnStart: 1
   clearObstaclesOnStart: 1
   player: {fileID: 1106560884}
-  groundSpawner: {fileID: 0}
+  playerMovement: {fileID: 1106560900}
+  groundSpawner: {fileID: 758042490}
   obstacleSpawner: {fileID: 136327063}
   distanceCounter: {fileID: 1497940460}
   playerCollision: {fileID: 1106560901}
@@ -1036,8 +1036,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEndlessMovement
   speed: 7
-  lateralSpeed: 10
-  maxLateralDistance: 10
+  lateralSpeed: 20
+  maxLateralDistance: 20
   useLateralMovement: 1
   inputSmoothing: 10
 --- !u!114 &1106560901
