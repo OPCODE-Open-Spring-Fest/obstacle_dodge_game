@@ -35,6 +35,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Shop.unity
     guid: 8240fa3e563cd174eab543ed155e3d2a
+  - enabled: 1
+    path: Assets/Scenes/StoryLine.unity
+    guid: 032ef92cee045e04e9827a660dbd127a
+  - enabled: 1
+    path: Assets/Scenes/StoryLine2.unity
+    guid: a952f34db688287418c7bfd302b1d752
+  - enabled: 1
+    path: Assets/Scenes/StoryLine3.unity
+    guid: e2a2fdef2dd54e940b3be089f4f517c2
+  - enabled: 1
+    path: Assets/Scenes/StoryLine4.unity
+    guid: 230dabe65e77cb34a9e8824eb0ce7471
+  - enabled: 1
+    path: Assets/Scenes/StoryLine5.unity
+    guid: 3bed8eca5b4b4714b8d114593d4a7344
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
