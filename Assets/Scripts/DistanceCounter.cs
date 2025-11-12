@@ -5,81 +5,84 @@ using TMPro;
 public class DistanceCounter : MonoBehaviour
 {
     [Header("Distance Settings")]
-    [Tooltip("Starting position Z coordinate (usually 0)")]
-    public float startZ = 0f;
-    
-    [Tooltip("Distance unit (e.g., 'm' for meters)")]
+    public float startZ;
     public string distanceUnit = "m";
-    
-    [Tooltip("Update distance every N frames (for performance)")]
     public int updateInterval = 1;
     
     [Header("UI Settings")]
-    [Tooltip("Text component to display distance (TextMeshPro or Unity Text)")]
     public TextMeshProUGUI distanceTextTMP;
-    
-    [Tooltip("Text component to display distance (Unity Text - alternative to TMP)")]
     public Text distanceText;
-    
-    [Tooltip("Format string for distance display (e.g., 'Distance: {0:F1} {1}')")]
     public string distanceFormat = "Distance: {0:F1} {1}";
     
     [Header("High Score Settings")]
-    [Tooltip("Save best distance to PlayerPrefs")]
     public bool saveBestDistance = true;
-    
-    [Tooltip("PlayerPrefs key for best distance")]
     public string bestDistanceKey = "BestDistance";
     
     private Transform player;
     private float currentDistance = 0f;
+    private float distanceOffset = 0f;
     private float bestDistance = 0f;
     private int frameCount = 0;
-    private bool isInitialized = false;
 
     void Start()
     {
-        // Find player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
             player = playerObj.transform;
-            startZ = player.position.z;
         }
         else
         {
             Debug.LogWarning("DistanceCounter: Player not found! Distance will not be tracked.");
         }
 
-        // Load best distance
         if (saveBestDistance)
         {
             bestDistance = PlayerPrefs.GetFloat(bestDistanceKey, 0f);
         }
 
-        // Check if UI components are assigned
         if (distanceTextTMP == null && distanceText == null)
         {
             Debug.LogWarning("DistanceCounter: No UI text component assigned! Distance will be logged to console only.");
         }
-
-        isInitialized = true;
     }
+
+    public void SetInitialDistance(float initialDistance)
+    {
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) player = playerObj.transform;
+            else
+            {
+                Debug.LogError("DistanceCounter: SetInitialDistance called, but Player not found!");
+                return;
+            }
+        }
+
+        startZ = player.position.z; 
+        currentDistance = initialDistance;
+        distanceOffset = initialDistance;
+
+        UpdateDistanceDisplay();
+    }
+
 
     void Update()
     {
-        if (!isInitialized || player == null) return;
+        if (player == null || EndlessGameManager.Instance == null || !EndlessGameManager.Instance.isGameRunning) return;
 
         frameCount++;
         if (frameCount % updateInterval != 0) return;
 
-        // Calculate distance traveled
-        float newDistance = player.position.z - startZ;
+        float distanceTraveledThisRun = player.position.z - startZ;
+        
+        float newDistance = distanceOffset + distanceTraveledThisRun;
+
         if (newDistance > currentDistance)
         {
             currentDistance = newDistance;
 
-            // Update best distance
             if (currentDistance > bestDistance)
             {
                 bestDistance = currentDistance;
@@ -90,7 +93,6 @@ public class DistanceCounter : MonoBehaviour
                 }
             }
 
-            // Update UI
             UpdateDistanceDisplay();
         }
     }
@@ -122,6 +124,7 @@ public class DistanceCounter : MonoBehaviour
     public void ResetDistance()
     {
         currentDistance = 0f;
+        distanceOffset = 0f;
         if (player != null)
         {
             startZ = player.position.z;
@@ -139,4 +142,3 @@ public class DistanceCounter : MonoBehaviour
         return string.Format(distanceFormat, bestDistance, distanceUnit);
     }
 }
-

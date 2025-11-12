@@ -40,10 +40,9 @@ public class ObstacleSpawner : MonoBehaviour
     [Tooltip("Maximum obstacles per spawn group")]
     public int maxObstaclesPerSection = 2;
 
-    // --- NEW VARIABLE ---
     [Header("Initial Spawn")]
     [Tooltip("How far from the player's start position should the *first* obstacle spawn?")]
-    public float initialSpawnDistance = 10f; // This is now controlled by you
+    public float initialSpawnDistance = 10f; 
     
     private Transform player;
     private List<GameObject> spawnedObstacles = new List<GameObject>();
@@ -57,16 +56,11 @@ public class ObstacleSpawner : MonoBehaviour
     {
         gameManager = EndlessGameManager.Instance;
 
-        // Find player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
             player = playerObj.transform;
-
-            // --- FIX #1 ---
-            // This now uses your new Inspector variable "initialSpawnDistance"
-            // to set the first spawn point. No more hardcoded logic.
-            nextSpawnZ = player.position.z + initialSpawnDistance; 
+            ResetSpawnTimer(player.position.z); 
         }
         else
         {
@@ -74,14 +68,9 @@ public class ObstacleSpawner : MonoBehaviour
             return;
         }
 
-        // Try to find GroundSpawner to get ground width
         groundSpawner = FindObjectOfType<GroundSpawner>();
         if (groundSpawner != null)
         {
-            // --- FIX #2 ---
-            // This line remains commented out, so your Inspector
-            // "Spawn Width" (set to 10) is ALWAYS used.
-            // spawnWidth = groundSpawner.GetGroundWidth();
         }
 
         if (obstaclePrefabs == null || obstaclePrefabs.Length == 0)
@@ -103,13 +92,11 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if (!isInitialized || player == null || (gameManager != null && !gameManager.isGameRunning)) return;
 
-        // Spawn obstacles ahead of player
         while (nextSpawnZ < player.position.z + spawnAheadDistance)
         {
             SpawnObstacleSection();
         }
 
-        // Despawn obstacles behind player
         for (int i = spawnedObstacles.Count - 1; i >= 0; i--)
         {
             if (spawnedObstacles[i] == null)
@@ -130,15 +117,12 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if (obstaclePrefabs == null || obstaclePrefabs.Length == 0) return;
         
-        // Check spawn chance first
         if (Random.Range(0f, 1f) > spawnChance) 
         {
-            // If we "fail" the spawn check, just advance the spawn position and exit
             nextSpawnZ += Random.Range(minDistanceBetweenObstacles, maxDistanceBetweenObstacles);
             return; 
         }
 
-        // Calculate spacing to avoid overlapping with last spawn
         float distanceFromLast = nextSpawnZ - lastSpawnZ;
         if (distanceFromLast < minDistanceBetweenObstacles)
         {
@@ -150,23 +134,18 @@ public class ObstacleSpawner : MonoBehaviour
 
         for (int i = 0; i < obstaclesToSpawn; i++)
         {
-            // Choose a random lane
             int lane = ChooseRandomLane(usedLanes);
-            if (lane == -1) break; // No available lanes
+            if (lane == -1) break; 
 
             usedLanes.Add(lane);
 
-            // Choose random obstacle prefab
             GameObject obstaclePrefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
             
-            // Calculate spawn position
             float xPosition = CalculateLaneXPosition(lane);
             Vector3 spawnPosition = new Vector3(xPosition, 0f, nextSpawnZ);
 
-            // Spawn obstacle
             GameObject obstacle = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
             
-            // Tag obstacle for collision detection
             if (!obstacle.CompareTag("Obstacle"))
             {
                 obstacle.tag = "Obstacle";
@@ -198,10 +177,9 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if (numberOfLanes == 1)
         {
-            return 0f; // Center
+            return 0f; 
         }
 
-        // This formula correctly calculates lane positions based on SpawnWidth
         float laneWidth = spawnWidth / numberOfLanes;
         float startX = -spawnWidth / 2f + laneWidth / 2f;
         return startX + (lane * laneWidth);
@@ -235,5 +213,17 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
         spawnedObstacles.Clear();
+    }
+
+    public void ResetSpawnTimer(float spawnDistance)
+    {
+        nextSpawnZ = spawnDistance + initialSpawnDistance;
+        lastSpawnZ = spawnDistance - 1000f; 
+    }
+
+    public void ResetForRespawn(float spawnDistance)
+    {
+        ClearAllObstacles();
+        ResetSpawnTimer(spawnDistance);
     }
 }

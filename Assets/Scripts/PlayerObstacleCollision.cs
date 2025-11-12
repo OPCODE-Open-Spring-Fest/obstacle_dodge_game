@@ -7,38 +7,29 @@ public class PlayerObstacleCollision : MonoBehaviour
     public string obstacleTag = "Obstacle";
     
     [Tooltip("Cooldown time between collisions (prevents multiple triggers)")]
-    public float collisionCooldown = 0.5f;
-    
-    [Header("Death Settings")]
-    [Tooltip("Delay before triggering death after collision")]
-    public float deathDelay = 0.1f;
+    public float collisionCooldown = 1.5f; // Increased cooldown for respawn
     
     private float lastCollisionTime = -1f;
-    private bool isDead = false;
+
+    // We no longer need isDead or DeathHelper
 
     void OnCollisionEnter(Collision collision)
     {
-        if (isDead) return;
-        
-        // Check if collided with obstacle
         if (collision.gameObject.CompareTag(obstacleTag))
         {
-            HandleObstacleCollision(collision);
+            HandleObstacleCollision();
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (isDead) return;
-        
-        // Check if triggered with obstacle
         if (other.gameObject.CompareTag(obstacleTag))
         {
-            HandleObstacleCollision(other);
+            HandleObstacleCollision();
         }
     }
 
-    void HandleObstacleCollision(Collision collision)
+    void HandleObstacleCollision()
     {
         // Cooldown check
         if (Time.time - lastCollisionTime < collisionCooldown)
@@ -47,55 +38,20 @@ public class PlayerObstacleCollision : MonoBehaviour
         }
 
         lastCollisionTime = Time.time;
-        TriggerDeath();
+
+        // --- NEW LOGIC ---
+        // Tell the GameManager we got hit
+        if (EndlessGameManager.Instance != null)
+        {
+            EndlessGameManager.Instance.PlayerHitObstacle();
+        }
     }
 
-    void HandleObstacleCollision(Collider collider)
+    // This is called by the Respawn coroutine to allow hits again
+    public void ResetCooldown()
     {
-        // Cooldown check
-        if (Time.time - lastCollisionTime < collisionCooldown)
-        {
-            return;
-        }
-
         lastCollisionTime = Time.time;
-        TriggerDeath();
     }
 
-    void TriggerDeath()
-    {
-        if (isDead) return;
-        
-        isDead = true;
-        Debug.Log("Player collided with obstacle! Game Over!");
-
-        // Disable player movement
-        PlayerEndlessMovement movement = GetComponent<PlayerEndlessMovement>();
-        if (movement != null)
-        {
-            movement.enabled = false;
-        }
-
-        // Stop rigidbody
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-        }
-
-        // Use DeathHelper to handle death animation and scene transition
-        DeathHelper.TriggerDeath(gameObject);
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
-    }
-
-    public void ResetDeath()
-    {
-        isDead = false;
-        lastCollisionTime = -1f;
-    }
+    // We removed IsDead() and ResetDeath() as they are no longer needed
 }
-

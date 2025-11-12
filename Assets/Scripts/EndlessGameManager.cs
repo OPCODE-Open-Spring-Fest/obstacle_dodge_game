@@ -1,48 +1,37 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro; 
 
 public class EndlessGameManager : MonoBehaviour
 {
     [Header("Game State")]
-    [Tooltip("Is the game currently running?")]
     public bool isGameRunning = false;
-    
-    [Tooltip("Is the game paused?")]
     public bool isGamePaused = false;
 
     [Header("Start Settings")]
-    [Tooltip("Pause the game on scene load until StartGame is called manually (e.g. by a countdown)")]
     public bool pauseOnStart = true;
-
-    [Tooltip("Reset the distance counter when a new run begins")]
-    public bool resetDistanceOnStart = true;
-
-    [Tooltip("Clear spawned obstacles when a new run begins")]
     public bool clearObstaclesOnStart = true;
 
     [Header("Game References")]
-    [Tooltip("Reference to the player GameObject")]
     public GameObject player;
-    
-    [Tooltip("Reference to GroundSpawner")]
+    public PlayerEndlessMovement playerMovement;
     public GroundSpawner groundSpawner;
-    
-    [Tooltip("Reference to ObstacleSpawner")]
     public ObstacleSpawner obstacleSpawner;
-    
-    [Tooltip("Reference to DistanceCounter")]
     public DistanceCounter distanceCounter;
-    
-    [Tooltip("Reference to PlayerObstacleCollision")]
     public PlayerObstacleCollision playerCollision;
-
-    [Header("Game Over Settings")]
-    [Tooltip("Scene name to load on game over")]
-    public string gameOverSceneName = "GameOver";
     
-    [Tooltip("Delay before loading game over scene")]
-    public float gameOverDelay = 2f;
+    [Header("Game Over Settings")]
+    public string gameOverSceneName = "GameOver";
+    public float gameOverDelay = 1f; 
+
+    [Header("UI")]
+    [Tooltip("Drag your heart UI controller object here.")]
+    public LivesHeartUI livesHeartUI; 
+
+    [Header("Respawn Settings")]
+    [Tooltip("How long (in seconds) is the player invincible after respawning?")]
+    public float respawnInvincibility = 1.5f;
 
     private static EndlessGameManager instance;
     public static EndlessGameManager Instance
@@ -56,12 +45,11 @@ public class EndlessGameManager : MonoBehaviour
             return instance;
         }
     }
-
+    
     private Coroutine gameOverRoutine;
 
     void Awake()
     {
-        // Singleton pattern
         if (instance == null)
         {
             instance = this;
@@ -70,6 +58,11 @@ public class EndlessGameManager : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        if (SessionManager.Instance == null)
+        {
+            Debug.LogError("SessionManager.Instance not found! Did you add the SessionManager to your Main Menu scene?");
         }
     }
 
@@ -80,42 +73,56 @@ public class EndlessGameManager : MonoBehaviour
 
     void InitializeGame()
     {
-        // Find player if not assigned
-        if (player == null)
+        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && playerMovement == null)
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-            {
-                player = playerObj;
-            }
+            playerMovement = player.GetComponent<PlayerEndlessMovement>();
         }
 
-        // Find components if not assigned
-        if (groundSpawner == null)
-        {
-            groundSpawner = FindObjectOfType<GroundSpawner>();
-        }
-
-        if (obstacleSpawner == null)
-        {
-            obstacleSpawner = FindObjectOfType<ObstacleSpawner>();
-        }
-
-        if (distanceCounter == null)
-        {
-            distanceCounter = FindObjectOfType<DistanceCounter>();
-        }
-
+        if (groundSpawner == null) groundSpawner = FindObjectOfType<GroundSpawner>();
+        if (obstacleSpawner == null) obstacleSpawner = FindObjectOfType<ObstacleSpawner>();
+        if (distanceCounter == null) distanceCounter = FindObjectOfType<DistanceCounter>();
         if (player != null && playerCollision == null)
         {
             playerCollision = player.GetComponent<PlayerObstacleCollision>();
         }
 
-        PrepareForNewRun(clearExistingObstacles: false);
-
-        if (!pauseOnStart)
+        if (livesHeartUI == null)
         {
-            StartGame();
+            livesHeartUI = FindObjectOfType<LivesHeartUI>();
+        }
+
+        float spawnDistance = 0f;
+        if (SessionManager.Instance != null)
+        {
+            spawnDistance = SessionManager.Instance.GetSpawnDistance();
+            UpdateLivesUI(); 
+        }
+
+        if (playerMovement != null)
+        {
+            playerMovement.SetInitialPosition(spawnDistance);
+        }
+        
+        if (distanceCounter != null)
+        {
+            distanceCounter.SetInitialDistance(spawnDistance); 
+        }
+
+        if (pauseOnStart)
+        {
+            PrepareForNewRun(false); 
+        }
+        else
+        {
+            StartGame(); 
+        }
+    }
+    void UpdateLivesUI()
+    {
+        if (livesHeartUI != null && SessionManager.Instance != null)
+        {
+            livesHeartUI.UpdateHearts(SessionManager.Instance.CurrentLives);
         }
     }
 
@@ -124,31 +131,16 @@ public class EndlessGameManager : MonoBehaviour
         isGameRunning = true;
         isGamePaused = false;
         Time.timeScale = 1f;
-
-        if (playerCollision != null)
-        {
-            playerCollision.ResetDeath();
-        }
-
-        // Reset distance counter
-        if (resetDistanceOnStart && distanceCounter != null)
-        {
-            distanceCounter.ResetDistance();
-        }
-
-        // Clear obstacles if any
         if (clearObstaclesOnStart && obstacleSpawner != null)
         {
             obstacleSpawner.ClearAllObstacles();
         }
-
         Debug.Log("Game Started!");
     }
 
     public void PauseGame()
     {
         if (!isGameRunning) return;
-
         isGamePaused = true;
         Time.timeScale = 0f;
         Debug.Log("Game Paused");
@@ -156,8 +148,7 @@ public class EndlessGameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        if (!isGameRunning) return;
-
+        if (!isGamePaused) return;
         isGamePaused = false;
         Time.timeScale = 1f;
         Debug.Log("Game Resumed");
@@ -169,26 +160,24 @@ public class EndlessGameManager : MonoBehaviour
 
         isGameRunning = false;
         isGamePaused = false;
-
+        
         if (gameOverRoutine != null)
         {
             StopCoroutine(gameOverRoutine);
         }
 
-        gameOverRoutine = StartCoroutine(GameOverSequence());
+        gameOverRoutine = StartCoroutine(GameOverSequence()); 
     }
 
     private IEnumerator GameOverSequence()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; 
 
-        // Get final distance
         float finalDistance = 0f;
         if (distanceCounter != null)
         {
             finalDistance = distanceCounter.GetCurrentDistance();
         }
-
         Debug.Log($"Game Over! Final Distance: {finalDistance}");
 
         if (gameOverDelay > 0f)
@@ -208,28 +197,11 @@ public class EndlessGameManager : MonoBehaviour
         gameOverRoutine = null;
     }
 
-    public void RestartGame()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void QuitToMainMenu()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(0); // Assuming main menu is at index 0
-    }
-
     public void PrepareForNewRun(bool clearExistingObstacles = true)
     {
         isGameRunning = false;
         isGamePaused = true;
         Time.timeScale = 0f;
-
-        if (playerCollision != null)
-        {
-            playerCollision.ResetDeath();
-        }
 
         if (clearExistingObstacles && clearObstaclesOnStart && obstacleSpawner != null)
         {
@@ -237,15 +209,87 @@ public class EndlessGameManager : MonoBehaviour
         }
     }
 
-    void Update()
+    public void PlayerHitObstacle()
     {
-        // Check if player is dead
-        if (isGameRunning && playerCollision != null && playerCollision.IsDead())
+        if (!isGameRunning) return; 
+
+        if (SessionManager.Instance == null)
         {
-            GameOver();
+            Debug.LogError("SessionManager not found!");
+            return;
         }
 
-        // Pause/Resume with Escape key
+        SessionManager.Instance.SpendLife();
+        UpdateLivesUI();
+
+        if (SessionManager.Instance.CurrentLives <= 0)
+        {
+            if (playerMovement != null) playerMovement.enabled = false;
+            GameOver();
+        }
+        else
+        {
+            StartCoroutine(RespawnPlayer());
+        }
+    }
+
+    private IEnumerator RespawnPlayer()
+    {
+        isGameRunning = false;
+        if (playerMovement != null) playerMovement.enabled = false;
+
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true; 
+        }
+        
+        yield return new WaitForSeconds(0.1f);
+
+        float respawnDistance = SessionManager.Instance.GetSpawnDistance();
+
+        if (groundSpawner != null)
+        {
+            groundSpawner.ResetForRespawn(respawnDistance);
+        }
+        if (obstacleSpawner != null)
+        {
+            obstacleSpawner.ResetForRespawn(respawnDistance);
+        }
+        
+        if (playerMovement != null)
+        {
+            playerMovement.SetInitialPosition(respawnDistance);
+        }
+        if (distanceCounter != null)
+        {
+            distanceCounter.SetInitialDistance(respawnDistance);
+        }
+
+        if (rb != null) rb.isKinematic = false;
+        if (playerMovement != null) playerMovement.enabled = true;
+
+        if(playerCollision != null)
+        {
+            playerCollision.ResetCooldown();
+        }
+        
+        Debug.Log($"Respawning... Invincible for {respawnInvincibility} seconds.");
+        yield return new WaitForSeconds(respawnInvincibility);
+
+        Debug.Log("Respawn complete. Game running.");
+        isGameRunning = true;
+    }
+
+
+    void Update()
+    {
+        if (isGameRunning && SessionManager.Instance != null && distanceCounter != null)
+        {
+            SessionManager.Instance.UpdateCheckpoint(distanceCounter.GetCurrentDistance());
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isGamePaused)
@@ -259,4 +303,3 @@ public class EndlessGameManager : MonoBehaviour
         }
     }
 }
-

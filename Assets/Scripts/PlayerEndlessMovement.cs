@@ -3,20 +3,12 @@ using UnityEngine;
 public class PlayerEndlessMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [Tooltip("Forward movement speed")]
     public float speed = 5f;
-    
-    [Tooltip("Lateral movement speed (left/right)")]
     public float lateralSpeed = 5f;
-    
-    [Tooltip("Maximum lateral movement distance from center")]
     public float maxLateralDistance = 5f;
     
     [Header("Input Settings")]
-    [Tooltip("Use horizontal input for lateral movement")]
     public bool useLateralMovement = true;
-    
-    [Tooltip("Input smoothing")]
     public float inputSmoothing = 10f;
     
     private Rigidbody rb;
@@ -33,24 +25,35 @@ public class PlayerEndlessMovement : MonoBehaviour
         }
     }
 
+    public void SetInitialPosition(float startZ)
+    {
+        transform.position = new Vector3(0, transform.position.y, startZ);
+        currentLateralPosition = 0f;
+
+        // --- ADDED ---
+        // Ensure Rigidbody is stopped when teleporting
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
     void Update()
     {
-        // Get input
         movementInput.x = Input.GetAxis("Horizontal");
         movementInput.y = Input.GetAxis("Vertical");
         
-        // Smooth input
         smoothedInput = Vector2.Lerp(smoothedInput, movementInput, Time.deltaTime * inputSmoothing);
     }
 
     void FixedUpdate()
     {
-        if (rb == null) return;
+        if (rb == null || EndlessGameManager.Instance == null || !EndlessGameManager.Instance.isGameRunning) return;
 
-        // Always move forward
         Vector3 forwardMove = Vector3.forward * speed * Time.fixedDeltaTime;
         
-        // Lateral movement (left/right)
         if (useLateralMovement)
         {
             float lateralInput = smoothedInput.x;
@@ -66,7 +69,6 @@ public class PlayerEndlessMovement : MonoBehaviour
         }
         else
         {
-            // Original rotation-based movement
             rb.MovePosition(rb.position + forwardMove);
             
             if (movementInput != Vector2.zero)
