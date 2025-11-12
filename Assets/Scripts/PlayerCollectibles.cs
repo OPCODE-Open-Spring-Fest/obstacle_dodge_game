@@ -56,22 +56,44 @@ public class PlayerCollectibles : MonoBehaviour
     {
         IsInvincible = true;
         var renderers = GetComponentsInChildren<Renderer>();
+
         foreach (var r in renderers)
         {
             if (r.material != null)
             {
-                Color c = r.material.color;
-                r.material.color = new Color(c.r, c.g, c.b, 0.5f);
+                var mat = r.material;
+
+                if (mat.HasProperty("_Color"))
+                {
+                    Color c = mat.color;
+                    mat.color = new Color(c.r, c.g, c.b, 0.5f);
+                }
+                else if (mat.HasProperty("_TintColor"))
+                {
+                    Color c = mat.GetColor("_TintColor");
+                    mat.SetColor("_TintColor", new Color(c.r, c.g, c.b, 0.5f));
+                }
             }
         }
+
         yield return new WaitForSeconds(duration);
 
         foreach (var r in renderers)
         {
             if (r.material != null)
             {
-                Color c = r.material.color;
-                r.material.color = new Color(c.r, c.g, c.b, 1f);
+                var mat = r.material;
+
+                if (mat.HasProperty("_Color"))
+                {
+                    Color c = mat.color;
+                    mat.color = new Color(c.r, c.g, c.b, 1f);
+                }
+                else if (mat.HasProperty("_TintColor"))
+                {
+                    Color c = mat.GetColor("_TintColor");
+                    mat.SetColor("_TintColor", new Color(c.r, c.g, c.b, 1f));
+                }
             }
         }
 
