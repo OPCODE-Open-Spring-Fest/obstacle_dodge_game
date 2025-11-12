@@ -1,77 +1,68 @@
 using UnityEngine;
 
-/// <summary>
-/// Tracks the time elapsed since the level started.
-/// Used to calculate completion time for saving best times.
-/// </summary>
 public class LevelTimer : MonoBehaviour
 {
-    private float levelStartTime;
+    [Header("Timer Settings")]
+    [Tooltip("The time limit for this level in seconds.")]
+    public float timeLimit = 60f; 
+
+    [Header("Game Over Scene")]
+    [Tooltip("The name of the scene to load when time runs out.")]
+    public string gameOverSceneName = "GameOver"; 
+
+    private float elapsedTime = 0f;
     private bool isTimerRunning = false;
-    private int currentLevelIndex;
+    private bool timeUpTriggered = false;
 
-    private void Start()
+    public float TimeRemaining
     {
-        StartTimer();
+        get { return timeLimit - elapsedTime; }
     }
 
-    /// <summary>
-    /// Starts the timer when level begins
-    /// </summary>
-    public void StartTimer()
+    public float ElapsedTime
     {
-        levelStartTime = Time.time;
-        isTimerRunning = true;
-        currentLevelIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
-        Debug.Log($"Level {currentLevelIndex} timer started");
+        get { return elapsedTime; }
     }
 
-    /// <summary>
-    /// Stops the timer and returns the elapsed time
-    /// </summary>
-    /// <returns>Time elapsed in seconds</returns>
-    public float StopTimer()
+    void Update()
     {
-        if (!isTimerRunning)
+        if (!isTimerRunning || timeUpTriggered)
         {
-            Debug.LogWarning("Timer was not running!");
-            return 0f;
+            return;
         }
 
-        float elapsedTime = Time.time - levelStartTime;
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime >= timeLimit)
+        {
+            isTimerRunning = false;
+            timeUpTriggered = true;
+            Debug.Log("Time's Up! You Lose.");
+
+            DisablePlayer();
+            
+            LastLevelRecorder.SaveAndLoad(gameOverSceneName);
+        }
+    }
+
+    public void SetTimerActive(bool isActive)
+    {
+        isTimerRunning = isActive;
+    }
+
+    public float StopTimer()
+    {
         isTimerRunning = false;
-        Debug.Log($"Level {currentLevelIndex} completed in {elapsedTime:F2} seconds");
+        Debug.Log($"LevelTimer stopped. Final time: {elapsedTime}");
         return elapsedTime;
     }
 
-    /// <summary>
-    /// Gets the current elapsed time without stopping the timer
-    /// </summary>
-    /// <returns>Time elapsed in seconds</returns>
-    public float GetCurrentTime()
+    private void DisablePlayer()
     {
-        if (!isTimerRunning)
+        ParkourPlayerController player = FindObjectOfType<ParkourPlayerController>();
+        if (player != null)
         {
-            return 0f;
+            player.enabled = false;
         }
-        return Time.time - levelStartTime;
-    }
-
-    /// <summary>
-    /// Checks if the timer is currently running
-    /// </summary>
-    public bool IsRunning()
-    {
-        return isTimerRunning;
-    }
-
-    /// <summary>
-    /// Resets the timer (useful for restarting a level)
-    /// </summary>
-    public void ResetTimer()
-    {
-        levelStartTime = Time.time;
-        Debug.Log($"Level {currentLevelIndex} timer reset");
     }
 }
-
