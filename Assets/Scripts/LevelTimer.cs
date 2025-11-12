@@ -2,12 +2,7 @@ using UnityEngine;
 
 public class LevelTimer : MonoBehaviour
 {
-    [Header("Timer Settings")]
-    [Tooltip("The time limit for this level in seconds.")]
     public float timeLimit = 60f; 
-
-    [Header("Game Over Scene")]
-    [Tooltip("The name of the scene to load when time runs out.")]
     public string gameOverSceneName = "GameOver"; 
 
     private float elapsedTime = 0f;

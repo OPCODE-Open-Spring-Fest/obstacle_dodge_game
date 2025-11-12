@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class ParkourFallDetector : MonoBehaviour
 {
-    [Header("Fall Detection Settings")]
     [SerializeField] private float fallThreshold = -10f;
     [SerializeField] private GameObject player;
     [SerializeField] private bool checkEveryFrame = true;
     [SerializeField] private float checkInterval = 0.1f;
     
+    [SerializeField] private string gameOverSceneName = "GameOver";
+
     private float lastCheckTime;
     private bool gameOverTriggered = false;
     
@@ -68,7 +69,7 @@ public class ParkourFallDetector : MonoBehaviour
         }
         else
         {
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            LastLevelRecorder.SaveAndLoad(gameOverSceneName);
         }
     }
     
@@ -84,4 +85,3 @@ public class ParkourFallDetector : MonoBehaviour
         #endif
     }
 }
-

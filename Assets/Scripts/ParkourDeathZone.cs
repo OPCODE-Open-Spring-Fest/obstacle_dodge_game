@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class ParkourDeathZone : MonoBehaviour
 {
-    [Header("Death Zone Settings")]
     [SerializeField] private bool useTrigger = true;
+    
+    [SerializeField] private string gameOverSceneName = "GameOver";
     
     private Component impulseSourceComponent;
     private System.Reflection.MethodInfo generateImpulseMethod;
@@ -95,7 +96,7 @@ public class ParkourDeathZone : MonoBehaviour
         }
         else
         {
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            LastLevelRecorder.SaveAndLoad(gameOverSceneName);
         }
     }
     
@@ -126,4 +127,3 @@ public class ParkourDeathZone : MonoBehaviour
         }
     }
 }
-
