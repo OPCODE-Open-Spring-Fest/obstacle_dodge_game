@@ -4,35 +4,42 @@ using System.Collections;
 
 public class GameStartController : MonoBehaviour
 {
-    // --- Public variables to assign in the Inspector ---
     [Header("UI & Timing")]
     public TextMeshProUGUI countdownText;
     public float countdownDuration = 3f;
 
     [Header("Game Component References")]
     public GameObject playerObject;
+    public LevelTimer levelTimer;  
 
-    private Mover playerMover;
+    private ParkourPlayerController parkourController; 
 
     void Start()
     {
         if (playerObject != null)
         {
-            playerMover = playerObject.GetComponent<Mover>();
+            parkourController = playerObject.GetComponent<ParkourPlayerController>(); 
         }
-        if (playerMover != null && countdownText != null)
+        
+        if (levelTimer == null)
+        {
+            levelTimer = FindObjectOfType<LevelTimer>(); // <-- This line is UPDATED
+        }
+
+        if (parkourController != null && countdownText != null) 
         {
             StartCoroutine(CountdownSequence());
         }
         else
         {
-            Debug.LogError("Countdown setup is missing components! Starting game immediately.");
+            Debug.LogError("Countdown setup is missing components! (Player or Text). Starting game immediately.");
             SetGameActive(true);
         }
     }
+
     IEnumerator CountdownSequence()
     {
-        SetGameActive(false);
+        SetGameActive(false); 
         countdownText.gameObject.SetActive(true);
         float timer = countdownDuration;
 
@@ -48,17 +55,22 @@ public class GameStartController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         countdownText.gameObject.SetActive(false);
-        SetGameActive(true);
+        SetGameActive(true); 
     }
 
     void SetGameActive(bool isActive)
     {
-        if (playerMover != null)
+        if (parkourController != null)
         {
-            playerMover.enabled = isActive;
+            parkourController.enabled = isActive;
         }
-        EnemyFollower[] allEnemies = FindObjectsOfType<EnemyFollower>();
+        
+        if (levelTimer != null)
+        {
+            levelTimer.SetTimerActive(isActive);
+        }
 
+        EnemyFollower[] allEnemies = FindObjectsOfType<EnemyFollower>();
         foreach (EnemyFollower enemy in allEnemies)
         {
             enemy.enabled = isActive;

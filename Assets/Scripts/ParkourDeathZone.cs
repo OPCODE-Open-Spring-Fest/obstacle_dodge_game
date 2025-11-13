@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class ParkourDeathZone : MonoBehaviour
 {
-    [Header("Death Zone Settings")]
     [SerializeField] private bool useTrigger = true;
+    
+    [SerializeField] private string gameOverSceneName = "";
     
     private Component impulseSourceComponent;
     private System.Reflection.MethodInfo generateImpulseMethod;
@@ -87,6 +88,15 @@ public class ParkourDeathZone : MonoBehaviour
         {
             generateImpulseMethod.Invoke(impulseSourceComponent, null);
         }
+
+        // --- NEW CODE ---
+        // Stop the timer so it can't load its own game over scene
+        LevelTimer timer = FindObjectOfType<LevelTimer>();
+        if (timer != null)
+        {
+            timer.StopTimer();
+        }
+        // --- END OF NEW CODE ---
         
         PlayerDeathAnimator deathAnimator = playerObject.GetComponent<PlayerDeathAnimator>();
         if (deathAnimator != null)
@@ -95,7 +105,7 @@ public class ParkourDeathZone : MonoBehaviour
         }
         else
         {
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            LastLevelRecorder.SaveAndLoad(gameOverSceneName);
         }
     }
     
@@ -126,4 +136,3 @@ public class ParkourDeathZone : MonoBehaviour
         }
     }
 }
-

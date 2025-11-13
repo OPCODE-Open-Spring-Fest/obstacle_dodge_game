@@ -855,7 +855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &241988303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,6 +1898,7 @@ MonoBehaviour:
   countdownText: {fileID: 241988303}
   countdownDuration: 3
   playerObject: {fileID: 1106560884}
+  levelTimer: {fileID: 0}
 --- !u!224 &438563086
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6698,6 +6699,7 @@ MonoBehaviour:
   player: {fileID: 1106560884}
   checkEveryFrame: 1
   checkInterval: 0.1
+  gameOverSceneName: 
 --- !u!114 &1989886831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6711,6 +6713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParkourDeathZone
   useTrigger: 1
+  gameOverSceneName: 
 --- !u!1 &2022138439
 GameObject:
   m_ObjectHideFlags: 0

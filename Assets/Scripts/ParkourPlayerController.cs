@@ -58,13 +58,11 @@ public class ParkourPlayerController : MonoBehaviour
     {
         PrintInstructions();
         
-        // If no ground check point assigned, use player position
         if (groundCheckPoint == null)
         {
             groundCheckPoint = transform;
         }
         
-        // Disable Mover script if it exists (to avoid conflicts)
         if (disableMoverScript)
         {
             Mover mover = GetComponent<Mover>();
@@ -85,7 +83,6 @@ public class ParkourPlayerController : MonoBehaviour
             rb.isKinematic = false;
         }
         
-        // Ensure player has a collider
         Collider playerCollider = GetComponent<Collider>();
         if (playerCollider == null)
         {
@@ -104,7 +101,6 @@ public class ParkourPlayerController : MonoBehaviour
         CheckGrounded();
         HandleInput();
         
-        // Reset justJumped flag after a short time or when we land
         if (justJumped && (Time.time - lastJumpTime > jumpCooldown || (wasGroundedLastFrame && isGrounded)))
         {
             justJumped = false;
@@ -124,27 +120,22 @@ public class ParkourPlayerController : MonoBehaviour
     
     private void CheckGrounded()
     {
-        // Get the collider bounds to check from the bottom of the player
         Collider col = GetComponent<Collider>();
         Vector3 checkPosition;
         
         if (col != null)
         {
-            // Check from the bottom of the collider
             checkPosition = col.bounds.center;
             checkPosition.y = col.bounds.min.y;
         }
         else
         {
-            // Fallback to ground check point or transform position
             checkPosition = groundCheckPoint != null ? groundCheckPoint.position : transform.position;
         }
         
-        // Method 1: Sphere cast from slightly above the bottom (more reliable)
         Vector3 sphereCheckPos = checkPosition + Vector3.up * groundCheckRadius;
         isGrounded = Physics.CheckSphere(sphereCheckPos, groundCheckRadius, groundLayerMask);
         
-        // Method 2: Raycast as backup check
         if (!isGrounded)
         {
             RaycastHit hit;
@@ -154,7 +145,6 @@ public class ParkourPlayerController : MonoBehaviour
             }
         }
         
-        // Method 3: Also check velocity (if moving very slowly downward, might be on ground)
         if (!isGrounded && rb != null && Mathf.Abs(rb.linearVelocity.y) < 0.05f)
         {
             RaycastHit hit;
@@ -182,7 +172,7 @@ public class ParkourPlayerController : MonoBehaviour
         movement = new Vector3(horizontal, 0f, vertical).normalized;
         
         bool jumpPressed = Input.GetKeyDown(KeyCode.Space) || 
-                          (useSpaceForJump && Input.GetButtonDown("Jump"));
+                            (useSpaceForJump && Input.GetButtonDown("Jump"));
         
         if (jumpPressed)
         {
@@ -247,30 +237,26 @@ public class ParkourPlayerController : MonoBehaviour
         {
         }
     }
-  
+
     public bool IsGrounded()
     {
         return isGrounded;
     }
     
-   
     public void SetMoveSpeed(float speed)
     {
         moveSpeed = speed;
     }
     
-  
     public void ResetMoveSpeed()
     {
         moveSpeed = originalMoveSpeed;
     }
-    
 
     public void SetJumpForce(float force)
     {
         jumpForce = force;
     }
-    
 
     private void OnDrawGizmosSelected()
     {
@@ -295,4 +281,3 @@ public class ParkourPlayerController : MonoBehaviour
         Gizmos.DrawLine(checkPosition, checkPosition + Vector3.down * groundCheckDistance);
     }
 }
-

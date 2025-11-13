@@ -29,4 +29,9 @@ public class LevelButtonHandler : MonoBehaviour
         // Debug.Log("Loading Level " + levelIndex);
         SceneManager.LoadScene("StoryLine5");
     }
+      public void LoadLeve6(string levelName)
+    {
+        // Debug.Log("Loading Level " + levelIndex);
+        SceneManager.LoadScene(14);
+    }
 }

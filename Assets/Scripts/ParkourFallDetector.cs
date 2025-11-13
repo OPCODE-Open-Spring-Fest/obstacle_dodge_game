@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class ParkourFallDetector : MonoBehaviour
 {
-    [Header("Fall Detection Settings")]
     [SerializeField] private float fallThreshold = -10f;
     [SerializeField] private GameObject player;
     [SerializeField] private bool checkEveryFrame = true;
     [SerializeField] private float checkInterval = 0.1f;
     
+    [SerializeField] private string gameOverSceneName = "";
+
     private float lastCheckTime;
     private bool gameOverTriggered = false;
     
@@ -61,6 +62,15 @@ public class ParkourFallDetector : MonoBehaviour
         gameOverTriggered = true;
         Debug.Log($"[ParkourFallDetector] Player fell below threshold ({fallThreshold}). Game Over!");
         
+        // --- NEW CODE ---
+        // Stop the timer so it can't load its own game over scene
+        LevelTimer timer = FindObjectOfType<LevelTimer>();
+        if (timer != null)
+        {
+            timer.StopTimer();
+        }
+        // --- END OF NEW CODE ---
+        
         PlayerDeathAnimator deathAnimator = player.GetComponent<PlayerDeathAnimator>();
         if (deathAnimator != null)
         {
@@ -68,7 +78,7 @@ public class ParkourFallDetector : MonoBehaviour
         }
         else
         {
-            LastLevelRecorder.SaveAndLoad("GameOver");
+            LastLevelRecorder.SaveAndLoad(gameOverSceneName);
         }
     }
     
@@ -84,4 +94,3 @@ public class ParkourFallDetector : MonoBehaviour
         #endif
     }
 }
-
