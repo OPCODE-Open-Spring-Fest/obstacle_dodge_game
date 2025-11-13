@@ -554,7 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e41c49b980cf164789490f753b95d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelTimer
-  timeLimit: 10
+  timeLimit: 20
   gameOverSceneName: gameover2
 --- !u!1 &328102939
 GameObject:
@@ -840,7 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43df2eb6709cd364e9b5a2c4f66f2e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndexToLoad: 15
+  sceneIndexToLoad: 3
 --- !u!65 &401703224
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3576,9 +3576,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ParkourFallDetector
   fallThreshold: -10
   player: {fileID: 1106560884}
-  checkEveryFrame: 1
+  checkEveryFrame: 0
   checkInterval: 0.1
-  gameOverSceneName: GameOver
+  gameOverSceneName: gameover3
 --- !u!114 &1989886831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3591,8 +3591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParkourDeathZone
-  useTrigger: 1
-  gameOverSceneName: GameOver
+  useTrigger: 0
+  gameOverSceneName: gameover3
 --- !u!1 &2139826823
 GameObject:
   m_ObjectHideFlags: 0

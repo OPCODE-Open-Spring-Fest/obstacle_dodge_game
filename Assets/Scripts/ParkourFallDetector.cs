@@ -7,7 +7,7 @@ public class ParkourFallDetector : MonoBehaviour
     [SerializeField] private bool checkEveryFrame = true;
     [SerializeField] private float checkInterval = 0.1f;
     
-    [SerializeField] private string gameOverSceneName = "GameOver";
+    [SerializeField] private string gameOverSceneName = "";
 
     private float lastCheckTime;
     private bool gameOverTriggered = false;
@@ -61,6 +61,15 @@ public class ParkourFallDetector : MonoBehaviour
         
         gameOverTriggered = true;
         Debug.Log($"[ParkourFallDetector] Player fell below threshold ({fallThreshold}). Game Over!");
+        
+        // --- NEW CODE ---
+        // Stop the timer so it can't load its own game over scene
+        LevelTimer timer = FindObjectOfType<LevelTimer>();
+        if (timer != null)
+        {
+            timer.StopTimer();
+        }
+        // --- END OF NEW CODE ---
         
         PlayerDeathAnimator deathAnimator = player.GetComponent<PlayerDeathAnimator>();
         if (deathAnimator != null)

@@ -121,7 +121,7 @@ public class PlayerDeathAnimator : MonoBehaviour
 
         yield return new WaitForSeconds(delayBeforeGameOver);
 
-        LastLevelRecorder.SaveAndLoad("GameOver");
+        LastLevelRecorder.SaveAndLoad("gameover3");
     }
 
     private void CreateParticleBlast(Vector3 position)
