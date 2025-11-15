@@ -2066,6 +2066,7 @@ GameObject:
   - component: {fileID: 1106560896}
   - component: {fileID: 1106560897}
   - component: {fileID: 1106560898}
+  - component: {fileID: 1106560899}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2423,6 +2424,19 @@ MonoBehaviour:
   cubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   sphereMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   capsuleMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1106560899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106560884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8786dd1618832e4ba35a2fdb3f0cb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 20
 --- !u!1 &1134948137
 GameObject:
   m_ObjectHideFlags: 0

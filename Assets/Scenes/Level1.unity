@@ -2823,8 +2823,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20314598, y: -0.0010157359, z: 0.00021073695, w: 0.9791479}
-  m_LocalPosition: {x: -22.72, y: 2.3520002, z: -21.24}
+  m_LocalRotation: {x: 0.20314601, y: -0.0010157359, z: 0.00021073698, w: 0.9791479}
+  m_LocalPosition: {x: -22.72, y: 2.461, z: -34.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6137,7 +6137,7 @@ Transform:
   m_GameObject: {fileID: 613601990}
   serializedVersion: 2
   m_LocalRotation: {x: 0.20314598, y: -0.0010157359, z: 0.00021073695, w: 0.9791479}
-  m_LocalPosition: {x: -22.72, y: 2.3520002, z: -21.24}
+  m_LocalPosition: {x: -22.72, y: 2.461, z: -34.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12616,6 +12616,7 @@ GameObject:
   - component: {fileID: 1166695322}
   - component: {fileID: 1166695323}
   - component: {fileID: 1166695324}
+  - component: {fileID: 1166695325}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -12727,7 +12728,7 @@ Transform:
   m_GameObject: {fileID: 1166695311}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -1.4551915e-11, w: 1}
-  m_LocalPosition: {x: -22.73, y: 0.26200032, z: -16.42}
+  m_LocalPosition: {x: -22.73, y: 0.371, z: -30}
   m_LocalScale: {x: 1, y: 0.45452, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12742,7 +12743,7 @@ Rigidbody:
   m_GameObject: {fileID: 1166695311}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 4
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -12998,6 +12999,21 @@ MonoBehaviour:
   cubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   sphereMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   capsuleMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1166695325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166695311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c2b194ef392c664cb5248fd0f28b9d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseAmount: 0.1
+  pulseSpeed: 2
+  rotateSpeed: 20
 --- !u!1 &1177075428
 GameObject:
   m_ObjectHideFlags: 0
