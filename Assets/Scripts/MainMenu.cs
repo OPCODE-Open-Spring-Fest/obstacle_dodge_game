@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
@@ -20,22 +21,19 @@ public class MainMenu : MonoBehaviour
     [Tooltip("Prefix text for high score display (e.g., 'Best Time: ').")]
     public string highScorePrefix = "Best Time: ";
 
+    [Header("Button Click Sound")]
+    public AudioClip clickSound;
+
     private void Start()
     {
-        // Ensure ProgressManager exists and loads progress
         if (ProgressManager.Instance == null)
         {
             GameObject progressManagerObj = new GameObject("ProgressManager");
             progressManagerObj.AddComponent<ProgressManager>();
         }
-
-        // Display high score
         UpdateHighScoreDisplay();
     }
 
-    /// <summary>
-    /// Updates the high score display with the saved high score
-    /// </summary>
     private void UpdateHighScoreDisplay()
     {
         if (ProgressManager.Instance == null)
@@ -55,44 +53,61 @@ public class MainMenu : MonoBehaviour
             displayText += "N/A";
         }
 
-        // Update TextMeshProUGUI if assigned
         if (highScoreText != null)
         {
             highScoreText.text = displayText;
         }
 
-        // Update legacy Text component if assigned
         if (highScoreTextLegacy != null)
         {
             highScoreTextLegacy.text = displayText;
         }
     }
+    IEnumerator DelayedLoad(string sceneName)
+    {
+        if (clickSound != null)
+        {
+            AudioSource.PlayClipAtPoint(clickSound, Camera.main.transform.position, 1f);
+        }
 
-    // Called by the Play button on the main menu. By default it will open the Level Select scene.
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene(sceneName);
+    }
     public void PlayGame()
     {
         if (!string.IsNullOrEmpty(levelSelectSceneName))
         {
-            SceneManager.LoadScene(levelSelectSceneName);
+            StartCoroutine(DelayedLoad(levelSelectSceneName));
         }
         else
         {
-            SceneManager.LoadScene(levelSelectBuildIndex);
+            StartCoroutine(DelayedLoad(SceneManager.GetSceneByBuildIndex(levelSelectBuildIndex).name));
         }
     }
-
     public void QuitGame()
     {
+        if (clickSound != null)
+            AudioSource.PlayClipAtPoint(clickSound, Camera.main.transform.position);
+
+        StartCoroutine(QuitDelayed());
+    }
+
+    IEnumerator QuitDelayed()
+    {
+        yield return new WaitForSeconds(0.15f);
+
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+    Debug.Log("Quit game (Editor)");
+    UnityEditor.EditorApplication.isPlaying = false;
 #else
+        Debug.Log("Quit game (Build)");
         Application.Quit();
 #endif
     }
     public void GoToShop()
     {
-        // This command loads the scene we created and named "Shop"
-        SceneManager.LoadScene("Shop");
+        StartCoroutine(DelayedLoad("Shop"));
         Debug.Log("Loading Shop Scene...");
     }
 }
